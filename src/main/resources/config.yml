@@ -1,0 +1,10 @@
+plugin_message:
+  command:
+    start:
+      success: "游戏开始运行"
+      game_playing: "游戏正在进行中,无法开始新的游戏"
+  game:
+    starting:
+      subtitle:
+        hide: "游戏开始，请躲藏者尽快寻找躲藏位置！"
+        seek: "游戏开始，请在倒计时结束后开始寻找"

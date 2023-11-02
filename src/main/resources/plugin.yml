@@ -5,3 +5,10 @@ api-version: 1.13
 load: POSTWORLD
 authors: [ YufiriaMazenta ]
 folia-supported: true
+description: 躲猫猫!
+commands:
+  hideandseek:
+    aliases:
+      - hs
+      - has
+    permission: hideandseek.command
