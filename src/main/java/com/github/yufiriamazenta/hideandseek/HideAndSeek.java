@@ -3,7 +3,10 @@ package com.github.yufiriamazenta.hideandseek;
 import crypticlib.BukkitPlugin;
 import crypticlib.CrypticLib;
 import crypticlib.scheduler.task.ITask;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class HideAndSeek extends BukkitPlugin {
@@ -29,7 +32,21 @@ public class HideAndSeek extends BukkitPlugin {
     }
 
     private void resetGame() {
-        //TODO
+        gameTask = null;
+        gameRunnable = null;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            CrypticLib.platform().teleportPlayer(player, player.getWorld().getSpawnLocation());
+            Util.clearPlayerEffect(player);
+            player.getInventory().clear();
+            player.updateInventory();
+            player.setGameMode(GameMode.SPECTATOR);
+        }
+        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("hide").unregister();
+        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("seek").unregister();
+    }
+
+    public boolean isGameRunning() {
+        return gameTask != null && gameRunnable != null;
     }
 
     public GameRunnable gameRunnable() {
@@ -42,6 +59,7 @@ public class HideAndSeek extends BukkitPlugin {
 
     public void startGame(GameRunnable gameRunnable) {
         this.gameTask = CrypticLib.platform().scheduler().runTaskTimer(this, gameRunnable, 1, 1);
+        this.gameRunnable = gameRunnable;
     }
 
     @NotNull
@@ -53,10 +71,6 @@ public class HideAndSeek extends BukkitPlugin {
 
     public ITask gameTask() {
         return gameTask;
-    }
-
-    public void setGameTask(ITask gameTask) {
-        this.gameTask = gameTask;
     }
 
     public static FileConfiguration config() {

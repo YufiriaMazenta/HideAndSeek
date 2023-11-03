@@ -2,7 +2,6 @@ package com.github.yufiriamazenta.hideandseek.cmd.sub;
 
 import com.github.yufiriamazenta.hideandseek.GameRunnable;
 import com.github.yufiriamazenta.hideandseek.HideAndSeek;
-import crypticlib.CrypticLib;
 import crypticlib.command.ISubCommand;
 import crypticlib.util.MsgUtil;
 import org.bukkit.Bukkit;
@@ -26,13 +25,13 @@ public enum GameStartCommand implements ISubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, List<String> args) {
-        GameRunnable gameRunnable = HideAndSeek.INSTANCE.gameRunnable();
-        if (gameRunnable == null) {
+        if (!HideAndSeek.INSTANCE.isGameRunning()) {
             int maxSeekNum = Bukkit.getOnlinePlayers().size() / 2;
             if (!args.isEmpty()) {
                 maxSeekNum = Integer.parseInt(args.get(0));
             }
-            HideAndSeek.INSTANCE.startGame(new GameRunnable((Collection<Player>) Bukkit.getOnlinePlayers(), maxSeekNum));
+            GameRunnable gameRunnable = new GameRunnable((Collection<Player>) Bukkit.getOnlinePlayers(), maxSeekNum);
+            HideAndSeek.INSTANCE.startGame(gameRunnable);
             MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.start.success"));
             return true;
         }

@@ -1,10 +1,21 @@
 plugin_message:
   command:
     start:
-      success: "游戏开始运行"
-      game_playing: "游戏正在进行中,无法开始新的游戏"
+      success: "&#FED8E2&l游戏开始运行"
+      game_playing: "&c游戏正在进行中,无法开始新的游戏"
+    end:
+      success: "&#FED8E2&l游戏结束成功"
+      game_not_exist: "&c不存在正在进行的游戏"
   game:
     starting:
       subtitle:
-        hide: "游戏开始，请躲藏者尽快寻找躲藏位置！"
-        seek: "游戏开始，请在倒计时结束后开始寻找"
+        hide: "&#FED8E2&l躲藏时间，请躲藏者尽快寻找躲藏位置！"
+        seek: "&#FED8E2&l躲藏时间，请在倒计时结束后开始寻找"
+        end: "&#FED8E2&l躲藏时间结束！开始寻找"
+    playing:
+      subtitle:
+        hide_death: "&#FED8E2&l你已死亡，进入旁观者模式"
+        all_hide_death: "&#FED8E2&l所有的躲藏者均已被找到，寻找者胜利！"
+        hide_win: "&#FED8E2&l躲藏者成功躲到了游戏结束，躲藏者胜利！"
+    end:
+      subtitle: "&#FED8E2&l将在倒计时结束后结束游戏"

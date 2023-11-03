@@ -12,17 +12,20 @@ repositories {
     maven("https://oss.sonatype.org/content/groups/public/")
     maven("https://jitpack.io")
     maven("https://repo.maven.apache.org/maven2/")
+    maven("https://repo.md-5.net/content/groups/public/")
+    maven( "https://repo.dmulloy2.net/repository/public/" )
     mavenCentral()
 }
 
 dependencies {
     compileOnly("org.jetbrains:annotations:24.0.1")
     compileOnly("org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT")
-    implementation("com.github.YufiriaMazenta:CrypticLib:1.0.10")
+    compileOnly("LibsDisguises:LibsDisguises:10.0.38")
+    implementation("com.github.YufiriaMazenta:CrypticLib:1.0.11")
 }
 
 group = "com.github.yufiriamazenta"
-version = "1.0.0-dev1"
+version = "1.0.0-dev2"
 var mainClass = "${rootProject.group}.${rootProject.name.lowercase()}.HideAndSeek"
 var pluginVersion: String = version.toString() + "-" + SimpleDateFormat("yyyyMMdd").format(System.currentTimeMillis())
 java.sourceCompatibility = JavaVersion.VERSION_17

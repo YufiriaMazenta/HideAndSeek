@@ -14,6 +14,7 @@ public enum GameCommand implements ISubCommand {
     GameCommand() {
         subCommandMap = new ConcurrentHashMap<>();
         regSubCommand(GameStartCommand.INSTANCE);
+        regSubCommand(GameEndCommand.INSTANCE);
     }
 
     @Override
