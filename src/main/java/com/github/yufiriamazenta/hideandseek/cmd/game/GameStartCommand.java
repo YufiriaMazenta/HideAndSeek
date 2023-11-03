@@ -26,7 +26,7 @@ public enum GameStartCommand implements ISubCommand {
     @Override
     public boolean onCommand(CommandSender sender, List<String> args) {
         if (!HideAndSeek.INSTANCE.isGameRunning()) {
-            int maxSeekNum = Bukkit.getOnlinePlayers().size() / 2;
+            int maxSeekNum = 1;
             if (!args.isEmpty()) {
                 maxSeekNum = Integer.parseInt(args.get(0));
             }

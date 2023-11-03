@@ -1,13 +1,21 @@
 plugin_message:
   command:
+    reload: "&a&l躲猫猫插件重载完毕"
     start:
       success: "&#FED8E2&l游戏开始运行"
       game_playing: "&c游戏正在进行中,无法开始新的游戏"
     end:
       success: "&#FED8E2&l游戏结束成功"
-      game_not_exist: "&c不存在正在进行的游戏"
+      game_not_exist: "&c&l不存在正在进行的游戏"
+    disguise:
+      game_not_start: "&c&l游戏未开始，无法进行伪装"
+      only_player: "&c&l只有玩家才能使用这个命令"
+      not_select_disguise: "&c&l请选择一个伪装对象"
   game:
     starting:
+      set_disguise:
+        hint: "&#FED8E2&l请点击选择你要隐藏的方块/实体"
+        hover: "&#FED8E2&l点击变身为%disguise%"
       subtitle:
         hide: "&#FED8E2&l躲藏时间，请躲藏者尽快寻找躲藏位置！"
         seek: "&#FED8E2&l躲藏时间，请在倒计时结束后开始寻找"
@@ -19,3 +27,6 @@ plugin_message:
         hide_win: "&#FED8E2&l躲藏者成功躲到了游戏结束，躲藏者胜利！"
     end:
       subtitle: "&#FED8E2&l将在倒计时结束后结束游戏"
+  disguise_translation:
+    crafting_table: "工作台"
+    lantern: "灯笼"

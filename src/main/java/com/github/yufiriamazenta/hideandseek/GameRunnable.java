@@ -1,6 +1,13 @@
 package com.github.yufiriamazenta.hideandseek;
 
 import crypticlib.CrypticLib;
+import crypticlib.util.MsgUtil;
+import me.libraryaddict.disguise.disguisetypes.Disguise;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -10,11 +17,13 @@ import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GameRunnable implements Runnable {
 
     private GameLifeCycle gameLifeCycle;
     private final List<UUID> hidePlayers;
+    private final Map<UUID, Disguise> hidePlayerDisguiseMap;
     private final List<UUID> seekPlayers;
     private long ticks, tempTicks;
     private final Random random;
@@ -24,6 +33,7 @@ public class GameRunnable implements Runnable {
         random = new Random();
         gameLifeCycle = GameLifeCycle.STARTING;
         hidePlayers = new ArrayList<>();
+        hidePlayerDisguiseMap = new ConcurrentHashMap<>();
         seekPlayers = new ArrayList<>();
         initTeam(new ArrayList<>(playerList), maxSeekNum);
         ticks = 0;
@@ -32,9 +42,9 @@ public class GameRunnable implements Runnable {
 
     private void initTeam(List<Player> playerList, int maxSeekNum) {
         hideTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("hide");
-        hideTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OWN_TEAM);
+        hideTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
         seekTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("seek");
-        seekTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OWN_TEAM);
+        seekTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
 
         for (int i = 0; i < maxSeekNum; i++) {
             int seek = random.nextInt(playerList.size());
@@ -105,6 +115,17 @@ public class GameRunnable implements Runnable {
     }
 
     private void tickLifeCycleStarting(long timeSecond) {
+        if (timeSecond == 0) {
+            for (UUID uuid : hidePlayers) {
+                if (hidePlayerDisguiseMap.containsKey(uuid))
+                    continue;
+                Player player = Bukkit.getPlayer(uuid);
+                if (player == null)
+                    continue;
+                sendSetDisguiseMsg(player);
+            }
+        }
+
         int countdown = (int) (gameLifeCycle.maxSecond - timeSecond);
         Util.sendTitle(hidePlayers, "&#FED8E2&l" + countdown, "plugin_message.game.starting.subtitle.hide");
         Util.sendTitle(seekPlayers, "&#FED8E2&l" + countdown, "plugin_message.game.starting.subtitle.seek");
@@ -116,12 +137,32 @@ public class GameRunnable implements Runnable {
         }
     }
 
+    private void sendSetDisguiseMsg(Player player) {
+        MsgUtil.sendMsg(player, HideAndSeek.config().getString("plugin_message.game.starting.set_disguise.hint"));
+        for (int i = 0; i < 3; i++) {
+            player.spigot().sendMessage(genDisguiseMsg());
+        }
+    }
+
+    private BaseComponent genDisguiseMsg() {
+        String disguise = DisguisesHooker.getDisguises().get(random.nextInt(DisguisesHooker.disguiseFuncMap().size()));
+        String disguiseTranslation = MsgUtil.color(HideAndSeek.config().getString("plugin_message.disguise_translation." + disguise));
+        BaseComponent component = new TextComponent(disguiseTranslation);
+        String hoverText = HideAndSeek.config().getString("plugin_message.game.starting.set_disguise.hover", "%disguise%")
+                .replace("%disguise%", disguiseTranslation);
+        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text[]{new Text(hoverText)}));
+        component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/hs disguise " + disguise));
+        return component;
+    }
+
     public void removePlayer(UUID uuid) {
         if (seekPlayers.contains(uuid)) {
             seekTeam.removePlayer(Bukkit.getPlayer(uuid));
             seekPlayers.remove(uuid);
         } else {
             hideTeam.removePlayer(Bukkit.getPlayer(uuid));
+            hidePlayerDisguiseMap.get(uuid).removeDisguise();
+            hidePlayerDisguiseMap.remove(uuid);
             hidePlayers.remove(uuid);
         }
     }
@@ -145,6 +186,10 @@ public class GameRunnable implements Runnable {
 
     public long getTempTicks() {
         return tempTicks;
+    }
+
+    public Map<UUID, Disguise> hidePlayerDisguiseMap() {
+        return hidePlayerDisguiseMap;
     }
 
     public enum GameLifeCycle {

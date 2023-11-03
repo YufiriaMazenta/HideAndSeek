@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class HideAndSeek extends BukkitPlugin {
 
@@ -32,8 +31,12 @@ public class HideAndSeek extends BukkitPlugin {
     }
 
     private void resetGame() {
-        gameTask = null;
+        gameRunnable.hidePlayerDisguiseMap().forEach((key, val) -> {
+            val.removeDisguise();
+        });
+        gameRunnable.hidePlayerDisguiseMap().clear();
         gameRunnable = null;
+        gameTask = null;
         for (Player player : Bukkit.getOnlinePlayers()) {
             CrypticLib.platform().teleportPlayer(player, player.getWorld().getSpawnLocation());
             Util.clearPlayerEffect(player);
@@ -60,13 +63,6 @@ public class HideAndSeek extends BukkitPlugin {
     public void startGame(GameRunnable gameRunnable) {
         this.gameTask = CrypticLib.platform().scheduler().runTaskTimer(this, gameRunnable, 1, 1);
         this.gameRunnable = gameRunnable;
-    }
-
-    @NotNull
-    @Override
-    public FileConfiguration getConfig() {
-        reloadConfig();
-        return super.getConfig();
     }
 
     public ITask gameTask() {

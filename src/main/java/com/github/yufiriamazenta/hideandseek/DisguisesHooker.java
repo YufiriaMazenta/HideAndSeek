@@ -6,6 +6,8 @@ import me.libraryaddict.disguise.disguisetypes.MiscDisguise;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -36,6 +38,10 @@ public class DisguisesHooker {
 
     public static Map<String, Function<Player, Disguise>> disguiseFuncMap() {
         return disguiseFuncMap;
+    }
+
+    public static List<String> getDisguises() {
+        return new ArrayList<>(disguiseFuncMap.keySet());
     }
 
 }
