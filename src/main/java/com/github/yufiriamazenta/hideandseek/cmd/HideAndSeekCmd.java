@@ -1,8 +1,8 @@
 package com.github.yufiriamazenta.hideandseek.cmd;
 
 import com.github.yufiriamazenta.hideandseek.HideAndSeek;
-import com.github.yufiriamazenta.hideandseek.cmd.sub.DisguisesCommand;
-import com.github.yufiriamazenta.hideandseek.cmd.sub.GameCommand;
+import com.github.yufiriamazenta.hideandseek.cmd.disguises.DisguisesCommand;
+import com.github.yufiriamazenta.hideandseek.cmd.game.GameCommand;
 import crypticlib.annotations.BukkitCommand;
 import crypticlib.command.IPluginCommand;
 import crypticlib.command.ISubCommand;

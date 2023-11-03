@@ -31,7 +31,11 @@ public class GameRunnable implements Runnable {
     }
 
     private void initTeam(List<Player> playerList, int maxSeekNum) {
-        resetTeam();
+        hideTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("hide");
+        hideTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OWN_TEAM);
+        seekTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("seek");
+        seekTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OWN_TEAM);
+
         for (int i = 0; i < maxSeekNum; i++) {
             int seek = random.nextInt(playerList.size());
             Player player = playerList.remove(seek);
@@ -110,13 +114,6 @@ public class GameRunnable implements Runnable {
             Util.sendTitle(seekPlayers, "", "plugin_message.game.starting.subtitle.end");
             setGameLifeCycle(GameLifeCycle.PLAYING);
         }
-    }
-
-    public void resetTeam() {
-        hideTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("hide");
-        hideTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OWN_TEAM);
-        seekTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("seek");
-        seekTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OWN_TEAM);
     }
 
     public void removePlayer(UUID uuid) {

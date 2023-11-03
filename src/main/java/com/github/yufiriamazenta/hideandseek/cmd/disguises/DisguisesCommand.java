@@ -1,4 +1,4 @@
-package com.github.yufiriamazenta.hideandseek.cmd.sub;
+package com.github.yufiriamazenta.hideandseek.cmd.disguises;
 
 import com.github.yufiriamazenta.hideandseek.DisguisesHooker;
 import crypticlib.command.ISubCommand;

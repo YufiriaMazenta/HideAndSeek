@@ -1,4 +1,4 @@
-package com.github.yufiriamazenta.hideandseek.cmd.sub;
+package com.github.yufiriamazenta.hideandseek.cmd.game;
 
 import crypticlib.command.ISubCommand;
 import org.jetbrains.annotations.NotNull;

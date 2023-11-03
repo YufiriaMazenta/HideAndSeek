@@ -30,6 +30,8 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
+        if (!HideAndSeek.INSTANCE.isGameRunning())
+            return;
         UUID uuid = event.getEntity().getUniqueId();
         if (HideAndSeek.INSTANCE.gameRunnable().hidePlayers().contains(uuid)) {
             HideAndSeek.INSTANCE.gameRunnable().removePlayer(uuid);
@@ -46,11 +48,15 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        if (!HideAndSeek.INSTANCE.isGameRunning())
+            return;
         //TODO
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
+        if (!HideAndSeek.INSTANCE.isGameRunning())
+            return;
         //TODO
     }
 
