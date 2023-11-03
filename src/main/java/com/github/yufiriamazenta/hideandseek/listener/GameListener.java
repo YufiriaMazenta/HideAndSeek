@@ -19,8 +19,10 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onHurt(EntityDamageEvent event) {
-        if (!HideAndSeek.INSTANCE.isGameRunning())
+        if (!HideAndSeek.INSTANCE.isGameRunning()) {
             event.setCancelled(true);
+            return;
+        }
         if (!(event.getEntity() instanceof Player player))
             return;
         if (HideAndSeek.INSTANCE.gameRunnable().seekPlayers().contains(player.getUniqueId())) {
