@@ -5,8 +5,10 @@ import crypticlib.CrypticLib;
 import crypticlib.scheduler.task.ITask;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 public class HideAndSeek extends BukkitPlugin {
 
@@ -22,7 +24,13 @@ public class HideAndSeek extends BukkitPlugin {
 
     @Override
     public void disable() {
-
+        Team hide = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("hide");
+        if (hide != null)
+            hide.unregister();
+        Team seek = Bukkit.getScoreboardManager().getMainScoreboard().getTeam("seek");
+        if (seek != null)
+            seek.unregister();
+        Bukkit.removeBossBar(new NamespacedKey(HideAndSeek.INSTANCE, "time"));
     }
 
     public void endGame() {
@@ -35,6 +43,10 @@ public class HideAndSeek extends BukkitPlugin {
             val.removeDisguise();
         });
         gameRunnable.hidePlayerDisguiseMap().clear();
+
+        gameRunnable.timeBossBar().removeAll();
+        Bukkit.removeBossBar(new NamespacedKey(HideAndSeek.INSTANCE, "time"));
+
         gameRunnable = null;
         gameTask = null;
         for (Player player : Bukkit.getOnlinePlayers()) {

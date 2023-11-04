@@ -12,11 +12,14 @@ plugin_message:
       only_player: "&c&l只有玩家才能使用这个命令"
       not_select_disguise: "&c&l请选择一个伪装对象"
   game:
+    boss_bar:
+      title: "&#FED8E2&l当前阶段剩余时间: &a&l%time% &#FED8E2&l秒"
     starting:
       set_disguise:
         hint: "&#FED8E2&l请点击选择你要变身的方块/实体，只能变身一次哦"
         hover: "&#FED8E2&l点击变身为%disguise%"
         msg: "&8&l>[&a&l%disguise%&8&l]<"
+        seek_hind: "&#FED8E2&l本局可变身为："
       subtitle:
         hide: "&#FED8E2&l躲藏时间，请躲藏者尽快寻找躲藏位置！"
         seek: "&#FED8E2&l躲藏时间，请在倒计时结束后开始寻找"
@@ -30,10 +33,32 @@ plugin_message:
       subtitle: "&#FED8E2&l将在倒计时结束后结束游戏"
   disguise_translation:
     crafting_table: "方块:工作台"
+    hay_block: "方块:干草块"
+    jack_o_lantern: "方块:南瓜灯"
+    smithing_table: "方块:锻造台"
+    grind_stone: "方块:砂轮"
+    fletching_table: "方块:制箭台"
+    campfire: "方块:营火"
+    bee_nest: "方块:蜂箱"
     lantern: "方块:灯笼"
+    dandelion: "方块:蒲公英"
+    poppy: "方块:虞美人"
+    blue_orchid: "方块:兰花"
+    allium: "方块:绒球葱"
+    rose_bush: "方块:玫瑰丛"
+    cod: "生物:鳕鱼"
+    salmon: "生物:鲑鱼"
+    tropical: "生物:热带鱼"
+    axolotl: "生物:美西螈"
+    pufferfish: "生物:河豚"
+    tadpole: "生物:蝌蚪"
+    sheep: "生物:绵羊"
+    pig: "生物:猪"
+    cow: "生物:牛"
+    bee: "生物:蜜蜂"
 game_cycle:
   max_second:
-    starting: 20
-    playing: 900
+    starting: 30
+    playing: 600
     END: 10
     DEAD: -1

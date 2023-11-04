@@ -3,6 +3,7 @@ package com.github.yufiriamazenta.hideandseek;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.MiscDisguise;
+import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -18,26 +19,57 @@ public class DisguisesHooker {
 
     static {
         disguiseFuncMap = new ConcurrentHashMap<>();
-        disguiseFuncMap.put("crafting_table", player -> {
-            MiscDisguise disguise = new MiscDisguise(DisguiseType.FALLING_BLOCK, Material.CRAFTING_TABLE);
-            disguise.setEntity(player);
-            disguise.startDisguise();
-            return disguise;
-        });
-        disguiseFuncMap.put("lantern", player -> {
-            MiscDisguise disguise = new MiscDisguise(DisguiseType.FALLING_BLOCK, Material.LANTERN);
-            disguise.setEntity(player);
-            disguise.startDisguise();
-            return disguise;
-        });
+        regDisguise("crafting_table", player -> genBlockDisguise(player, Material.CRAFTING_TABLE));
+        regDisguise("hay_block", player -> genBlockDisguise(player, Material.HAY_BLOCK));
+        regDisguise("jack_o_lantern", player -> genBlockDisguise(player, Material.JACK_O_LANTERN));
+        regDisguise("smithing_table", player -> genBlockDisguise(player, Material.SMITHING_TABLE));
+        regDisguise("grindstone", player -> genBlockDisguise(player, Material.GRINDSTONE));
+        regDisguise("fletching_table", player -> genBlockDisguise(player, Material.FLETCHING_TABLE));
+        regDisguise("campfire", player -> genBlockDisguise(player, Material.CAMPFIRE));
+        regDisguise("bee_nest", player -> genBlockDisguise(player, Material.BEE_NEST));
+        regDisguise("lantern", player -> genBlockDisguise(player, Material.LANTERN));
+        regDisguise("dandelion", player -> genBlockDisguise(player, Material.DANDELION));
+        regDisguise("poppy", player -> genBlockDisguise(player, Material.POPPY));
+        regDisguise("blue_orchid", player -> genBlockDisguise(player, Material.BLUE_ORCHID));
+        regDisguise("allium", player -> genBlockDisguise(player, Material.ALLIUM));
+        regDisguise("rose_bush", player -> genBlockDisguise(player, Material.ROSE_BUSH));
+
+        regDisguise("cod", player -> genMobDisguise(player, DisguiseType.COD));
+        regDisguise("salmon", player -> genMobDisguise(player, DisguiseType.SALMON));
+        regDisguise("tropical", player -> genMobDisguise(player, DisguiseType.TROPICAL_FISH));
+        regDisguise("axolotl", player -> genMobDisguise(player, DisguiseType.AXOLOTL));
+        regDisguise("pufferfish", player -> genMobDisguise(player, DisguiseType.PUFFERFISH));
+        regDisguise("tadpole", player -> genMobDisguise(player, DisguiseType.TADPOLE));
+        regDisguise("sheep", player -> genMobDisguise(player, DisguiseType.SHEEP));
+        regDisguise("pig", player -> genMobDisguise(player, DisguiseType.PIG));
+        regDisguise("cow", player -> genMobDisguise(player, DisguiseType.COW));
+        regDisguise("bee", player -> genMobDisguise(player, DisguiseType.BEE));
     }
 
     public static Disguise disguises(Player player, String type) {
         return disguiseFuncMap.get(type).apply(player);
     }
 
+    public static void regDisguise(String key, Function<Player, Disguise> disguiseFunction) {
+        disguiseFuncMap.put(key, disguiseFunction);
+    }
+
     public static Map<String, Function<Player, Disguise>> disguiseFuncMap() {
         return disguiseFuncMap;
+    }
+
+    private static MobDisguise genMobDisguise(Player player, DisguiseType type) {
+        MobDisguise disguise = new MobDisguise(type);
+        disguise.setEntity(player);
+        disguise.startDisguise();
+        return disguise;
+    }
+
+    private static MiscDisguise genBlockDisguise(Player player, Material material) {
+        MiscDisguise disguise = new MiscDisguise(DisguiseType.FALLING_BLOCK, material);
+        disguise.setEntity(player);
+        disguise.startDisguise();
+        return disguise;
     }
 
     public static List<String> getDisguises() {

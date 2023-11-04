@@ -8,10 +8,14 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarFlag;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.NameTagVisibility;
@@ -29,13 +33,28 @@ public class GameRunnable implements Runnable {
     private long ticks, tempTicks;
     private final Random random;
     private Team hideTeam, seekTeam;
+    private final List<BaseComponent> disguiseTextComponents;
+    private BossBar timeBossBar;
 
     public GameRunnable(Collection<Player> playerList, int maxSeekNum) {
         random = new Random();
         gameLifeCycle = GameLifeCycle.STARTING;
         hidePlayers = new ArrayList<>();
         hidePlayerDisguiseMap = new ConcurrentHashMap<>();
+        disguiseTextComponents = new ArrayList<>();
         seekPlayers = new ArrayList<>();
+
+        timeBossBar = Bukkit.createBossBar(
+                new NamespacedKey(HideAndSeek.INSTANCE, "time"),
+                MsgUtil.color(HideAndSeek.config().getString("plugin_message.game.boss_bar.title", "%time%")),
+                BarColor.PINK,
+                BarStyle.SOLID,
+                BarFlag.CREATE_FOG
+        );
+        for (Player player : playerList) {
+            timeBossBar.addPlayer(player);
+        }
+
         initTeam(new ArrayList<>(playerList), maxSeekNum);
         ticks = 0;
         tempTicks = ticks;
@@ -49,8 +68,10 @@ public class GameRunnable implements Runnable {
 
         hideTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("hide");
         hideTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+        hideTeam.setColor(ChatColor.AQUA);
         seekTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("seek");
         seekTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+        seekTeam.setColor(ChatColor.RED);
 
         for (Player player : playerList) {
             player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
@@ -85,6 +106,13 @@ public class GameRunnable implements Runnable {
             return;
         }
         long timeSecond = tempTicks / 20;
+        long remainingSecond = gameLifeCycle.maxSecond - timeSecond;
+        String bossBarTitle = MsgUtil.color(
+                HideAndSeek.config().getString("plugin_message.game.boss_bar.title", "%time%")
+                        .replace("%time%", "" + remainingSecond)
+        );
+        timeBossBar.setTitle(bossBarTitle);
+        timeBossBar.setProgress((double) timeSecond / gameLifeCycle.maxSecond);
         switch (gameLifeCycle) {
             case STARTING -> tickLifeCycleStarting(timeSecond);
             case PLAYING -> tickLifeCyclePlaying(timeSecond);
@@ -132,7 +160,15 @@ public class GameRunnable implements Runnable {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null)
                     continue;
-                sendSetDisguiseMsg(player);
+                sendHiderDisguiseMsg(player);
+            }
+            for (UUID uuid : seekPlayers) {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player == null)
+                    continue;
+                sendSeekerDisguiseMsgHint(player);
+                player.getInventory().addItem(new ItemStack(Material.BOW));
+                player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (GameLifeCycle.PLAYING.maxSecond / 60)));
             }
         }
 
@@ -160,10 +196,23 @@ public class GameRunnable implements Runnable {
         }
     }
 
-    private void sendSetDisguiseMsg(Player player) {
+    private void sendHiderDisguiseMsg(Player player) {
+        if (disguiseTextComponents.isEmpty()) {
+            for (int i = 0; i < 4; i++) {
+                disguiseTextComponents.add(genDisguiseMsg());
+            }
+        }
         MsgUtil.sendMsg(player, HideAndSeek.config().getString("plugin_message.game.starting.set_disguise.hint"));
-        for (int i = 0; i < 3; i++) {
-            player.spigot().sendMessage(genDisguiseMsg());
+        for (BaseComponent disguise : disguiseTextComponents) {
+            player.spigot().sendMessage(disguise);
+        }
+    }
+
+    private void sendSeekerDisguiseMsgHint(Player player) {
+        MsgUtil.sendMsg(player, HideAndSeek.config().getString("plugin_message.game.starting.set_disguise.seek_hind"));
+        for (BaseComponent disguise : disguiseTextComponents) {
+            BaseComponent seekDisguiseHint = new TextComponent(disguise.toLegacyText());
+            player.spigot().sendMessage(seekDisguiseHint);
         }
     }
 
@@ -220,6 +269,14 @@ public class GameRunnable implements Runnable {
 
     public Map<UUID, Disguise> hidePlayerDisguiseMap() {
         return hidePlayerDisguiseMap;
+    }
+
+    public BossBar timeBossBar() {
+        return timeBossBar;
+    }
+
+    public void setTimeBossBar(BossBar timeBossBar) {
+        this.timeBossBar = timeBossBar;
     }
 
     public enum GameLifeCycle {
