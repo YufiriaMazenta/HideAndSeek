@@ -29,6 +29,7 @@ public class GameRunnable implements Runnable {
     private GameLifeCycle gameLifeCycle;
     private final List<UUID> hidePlayers;
     private final Map<UUID, Disguise> hidePlayerDisguiseMap;
+    private final Map<UUID, Boolean> hidePlayerLockedMap;
     private final List<UUID> seekPlayers;
     private long ticks, tempTicks;
     private final Random random;
@@ -41,6 +42,7 @@ public class GameRunnable implements Runnable {
         gameLifeCycle = GameLifeCycle.STARTING;
         hidePlayers = new ArrayList<>();
         hidePlayerDisguiseMap = new ConcurrentHashMap<>();
+        hidePlayerLockedMap = new ConcurrentHashMap<>();
         disguiseTextComponents = new ArrayList<>();
         seekPlayers = new ArrayList<>();
 
@@ -93,6 +95,7 @@ public class GameRunnable implements Runnable {
             CrypticLib.platform().teleportPlayer(player, player.getWorld().getSpawnLocation());
             player.setGameMode(GameMode.ADVENTURE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false, false));
+            player.setAllowFlight(false);
             hidePlayers.add(player.getUniqueId());
             hideTeam.addPlayer(player);
         }
@@ -242,6 +245,7 @@ public class GameRunnable implements Runnable {
             Disguise disguise = hidePlayerDisguiseMap.remove(uuid);
             if (disguise != null)
                 disguise.removeDisguise();
+            hidePlayerLockedMap.remove(uuid);
             hidePlayers.remove(uuid);
         }
     }
@@ -263,7 +267,7 @@ public class GameRunnable implements Runnable {
         return seekPlayers;
     }
 
-    public long getTempTicks() {
+    public long tempTicks() {
         return tempTicks;
     }
 
@@ -277,6 +281,10 @@ public class GameRunnable implements Runnable {
 
     public void setTimeBossBar(BossBar timeBossBar) {
         this.timeBossBar = timeBossBar;
+    }
+
+    public Map<UUID, Boolean> hidePlayerLockedMap() {
+        return hidePlayerLockedMap;
     }
 
     public enum GameLifeCycle {

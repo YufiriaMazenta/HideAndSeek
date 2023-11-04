@@ -25,17 +25,21 @@ public enum GameStartCommand implements ISubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, List<String> args) {
-        if (!HideAndSeek.INSTANCE.isGameRunning()) {
-            int maxSeekNum = 1;
-            if (!args.isEmpty()) {
-                maxSeekNum = Integer.parseInt(args.get(0));
-            }
-            GameRunnable gameRunnable = new GameRunnable((Collection<Player>) Bukkit.getOnlinePlayers(), maxSeekNum);
-            HideAndSeek.INSTANCE.startGame(gameRunnable);
-            MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.start.success"));
+        if (HideAndSeek.INSTANCE.isGameRunning()) {
+            MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.start.game_playing"));
             return true;
         }
-        MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.start.game_playing"));
+        int maxSeekNum = 1;
+        if (!args.isEmpty()) {
+            maxSeekNum = Integer.parseInt(args.get(0));
+        }
+        if (Bukkit.getOnlinePlayers().size() < maxSeekNum + 1) {
+            MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.start.not_enough_player"));
+            return true;
+        }
+        GameRunnable gameRunnable = new GameRunnable((Collection<Player>) Bukkit.getOnlinePlayers(), maxSeekNum);
+        HideAndSeek.INSTANCE.startGame(gameRunnable);
+        MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.start.success"));
         return true;
     }
 

@@ -3,7 +3,8 @@ plugin_message:
     reload: "&a&l躲猫猫插件重载完毕"
     start:
       success: "&#FED8E2&l游戏开始运行"
-      game_playing: "&c游戏正在进行中,无法开始新的游戏"
+      not_enough_player: "&c&l玩家数量不够，无法开始游戏"
+      game_playing: "&c&l游戏正在进行中，无法开始新的游戏"
     end:
       success: "&#FED8E2&l游戏结束成功"
       game_not_exist: "&c&l不存在正在进行的游戏"

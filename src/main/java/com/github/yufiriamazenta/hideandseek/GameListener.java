@@ -1,6 +1,6 @@
 package com.github.yufiriamazenta.hideandseek;
 
-import com.github.yufiriamazenta.hideandseek.HideAndSeek;
+import crypticlib.CrypticLib;
 import crypticlib.annotations.BukkitListener;
 import crypticlib.util.MsgUtil;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
@@ -8,6 +8,7 @@ import me.libraryaddict.disguise.disguisetypes.MiscDisguise;
 import me.libraryaddict.disguise.events.DisguiseEvent;
 import me.libraryaddict.disguise.events.UndisguiseEvent;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -101,6 +101,60 @@ public class GameListener implements Listener {
     public void onHangingBreak(HangingBreakByEntityEvent event) {
         if (event.getRemover() instanceof Player player) {
             if (!player.getGameMode().equals(GameMode.CREATIVE))
+                event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onHideSwapHandLock(PlayerSwapHandItemsEvent event) {
+        if (!HideAndSeek.INSTANCE.isGameRunning())
+            return;
+        GameRunnable gameRunnable = HideAndSeek.INSTANCE.gameRunnable();
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+
+        if (!gameRunnable.hidePlayers().contains(uuid))
+            return;
+        if (gameRunnable.hidePlayerLockedMap().containsKey(uuid) && gameRunnable.hidePlayerLockedMap().get(uuid)) {
+            player.setAllowFlight(false);
+            player.setFlying(false);
+            gameRunnable.hidePlayerLockedMap().put(uuid, false);
+            return;
+        }
+        gameRunnable.hidePlayerLockedMap().put(uuid, true);
+
+        if (gameRunnable.hidePlayerDisguiseMap().containsKey(uuid)) {
+            Disguise disguise = gameRunnable.hidePlayerDisguiseMap().get(uuid);
+            if (disguise instanceof MiscDisguise) {
+                Location location = player.getLocation().clone();
+                location.setX(location.getBlockX() + 0.5);
+                location.setZ(location.getBlockZ() + 0.5);
+                CrypticLib.platform().teleportPlayer(player, location);
+                player.setAllowFlight(true);
+                player.setFlying(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onHideMove(PlayerMoveEvent event) {
+        if (!HideAndSeek.INSTANCE.isGameRunning())
+            return;
+        GameRunnable gameRunnable = HideAndSeek.INSTANCE.gameRunnable();
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+        if (!gameRunnable.hidePlayerLockedMap().containsKey(uuid))
+            return;
+        if (gameRunnable.hidePlayerLockedMap().get(uuid)) {
+            double fromX = event.getFrom().getX();
+            double fromY = event.getFrom().getY();
+            double fromZ = event.getFrom().getZ();
+            if (event.getTo() == null)
+                return;
+            double toX = event.getTo().getX();
+            double toY = event.getTo().getY();
+            double toZ = event.getTo().getZ();
+            if (!(fromX == toX && fromY == toY && fromZ == toZ))
                 event.setCancelled(true);
         }
     }
