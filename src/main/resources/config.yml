@@ -14,8 +14,9 @@ plugin_message:
   game:
     starting:
       set_disguise:
-        hint: "&#FED8E2&l请点击选择你要隐藏的方块/实体"
+        hint: "&#FED8E2&l请点击选择你要变身的方块/实体，只能变身一次哦"
         hover: "&#FED8E2&l点击变身为%disguise%"
+        msg: "&8&l>[&a&l%disguise%&8&l]<"
       subtitle:
         hide: "&#FED8E2&l躲藏时间，请躲藏者尽快寻找躲藏位置！"
         seek: "&#FED8E2&l躲藏时间，请在倒计时结束后开始寻找"
@@ -28,5 +29,11 @@ plugin_message:
     end:
       subtitle: "&#FED8E2&l将在倒计时结束后结束游戏"
   disguise_translation:
-    crafting_table: "工作台"
-    lantern: "灯笼"
+    crafting_table: "方块:工作台"
+    lantern: "方块:灯笼"
+game_cycle:
+  max_second:
+    starting: 20
+    playing: 900
+    END: 10
+    DEAD: -1

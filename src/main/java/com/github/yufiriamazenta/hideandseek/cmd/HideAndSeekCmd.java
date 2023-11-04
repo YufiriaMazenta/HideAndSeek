@@ -1,7 +1,7 @@
 package com.github.yufiriamazenta.hideandseek.cmd;
 
 import com.github.yufiriamazenta.hideandseek.HideAndSeek;
-import com.github.yufiriamazenta.hideandseek.cmd.disguises.DisguisesCommand;
+import com.github.yufiriamazenta.hideandseek.cmd.disguises.DisguiseCommand;
 import com.github.yufiriamazenta.hideandseek.cmd.game.GameCommand;
 import com.github.yufiriamazenta.hideandseek.cmd.reload.ReloadCommand;
 import crypticlib.annotations.BukkitCommand;
@@ -21,7 +21,7 @@ public class HideAndSeekCmd implements IPluginCommand {
     private HideAndSeekCmd() {
         subCommandMap = new ConcurrentHashMap<>();
         regSubCommand(GameCommand.INSTANCE);
-        regSubCommand(DisguisesCommand.INSTANCE);
+        regSubCommand(DisguiseCommand.INSTANCE);
         regSubCommand(ReloadCommand.INSTANCE);
     }
 

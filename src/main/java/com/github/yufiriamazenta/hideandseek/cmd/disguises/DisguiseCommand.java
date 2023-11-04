@@ -8,23 +8,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public enum DisguisesCommand implements ISubCommand {
+public enum DisguiseCommand implements ISubCommand {
 
     INSTANCE;
 
     @Override
     public String getSubCommandName() {
-        return "disguises";
+        return "disguise";
     }
 
     @Override
     public String getPerm() {
-        return "hideandseek.command.disguises";
+        return "hideandseek.command.disguise";
     }
 
     @Override
@@ -37,11 +34,14 @@ public enum DisguisesCommand implements ISubCommand {
             MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.disguise.only_player"));
             return true;
         }
+        UUID uuid = player.getUniqueId();
+        if (HideAndSeek.INSTANCE.gameRunnable().hidePlayerDisguiseMap().containsKey(uuid))
+            return true;
         if (args.isEmpty()) {
             MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.disguise.not_select_disguise"));
             return true;
         }
-        HideAndSeek.INSTANCE.gameRunnable().hidePlayerDisguiseMap().put(player.getUniqueId(), DisguisesHooker.disguises(player, args.get(0)));
+        HideAndSeek.INSTANCE.gameRunnable().hidePlayerDisguiseMap().put(uuid, DisguisesHooker.disguises(player, args.get(0)));
         return true;
     }
 

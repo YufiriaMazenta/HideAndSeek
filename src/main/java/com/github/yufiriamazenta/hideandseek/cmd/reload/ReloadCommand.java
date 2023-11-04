@@ -1,5 +1,6 @@
 package com.github.yufiriamazenta.hideandseek.cmd.reload;
 
+import com.github.yufiriamazenta.hideandseek.GameRunnable;
 import com.github.yufiriamazenta.hideandseek.HideAndSeek;
 import crypticlib.command.ISubCommand;
 import crypticlib.util.MsgUtil;
@@ -17,6 +18,7 @@ public enum ReloadCommand implements ISubCommand {
     @Override
     public boolean onCommand(CommandSender sender, List<String> args) {
         HideAndSeek.INSTANCE.reloadConfig();
+        GameRunnable.GameLifeCycle.resetMaxSecond();
         MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.reload"));
         return ISubCommand.super.onCommand(sender, args);
     }

@@ -10,6 +10,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -41,10 +42,19 @@ public class GameRunnable implements Runnable {
     }
 
     private void initTeam(List<Player> playerList, int maxSeekNum) {
+        if (Bukkit.getScoreboardManager().getMainScoreboard().getTeam("hide") != null)
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("hide").unregister();
+        if (Bukkit.getScoreboardManager().getMainScoreboard().getTeam("seek") != null)
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("seek").unregister();
+
         hideTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("hide");
         hideTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
         seekTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("seek");
         seekTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+
+        for (Player player : playerList) {
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        }
 
         for (int i = 0; i < maxSeekNum; i++) {
             int seek = random.nextInt(playerList.size());
@@ -53,7 +63,7 @@ public class GameRunnable implements Runnable {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 100, false, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 100, false, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, -100, false, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, -100, false, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 100, false, false, false));
             CrypticLib.platform().teleportPlayer(player, player.getWorld().getSpawnLocation());
             seekPlayers.add(player.getUniqueId());
             seekTeam.addPlayer(player);
@@ -133,6 +143,19 @@ public class GameRunnable implements Runnable {
         if (timeSecond >= gameLifeCycle.maxSecond) {
             Util.sendTitle(hidePlayers, "", "plugin_message.game.starting.subtitle.end");
             Util.sendTitle(seekPlayers, "", "plugin_message.game.starting.subtitle.end");
+            for (UUID uuid : hidePlayers) {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player == null)
+                    continue;
+                Util.clearPlayerEffect(player);
+            }
+            for (UUID uuid : seekPlayers) {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player == null)
+                    continue;
+                Util.clearPlayerEffect(player);
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 3, false, false, false));
+            }
             setGameLifeCycle(GameLifeCycle.PLAYING);
         }
     }
@@ -146,10 +169,16 @@ public class GameRunnable implements Runnable {
 
     private BaseComponent genDisguiseMsg() {
         String disguise = DisguisesHooker.getDisguises().get(random.nextInt(DisguisesHooker.disguiseFuncMap().size()));
-        String disguiseTranslation = MsgUtil.color(HideAndSeek.config().getString("plugin_message.disguise_translation." + disguise));
+        String disguiseTranslation = HideAndSeek.config().getString("plugin_message.disguise_translation." + disguise);
+        disguiseTranslation = MsgUtil.color(
+                HideAndSeek.config().getString("plugin_message.game.starting.set_disguise.msg", "&7&l> &a&l%disguise% &7&l<")
+                        .replace("%disguise%", disguiseTranslation)
+        );
         BaseComponent component = new TextComponent(disguiseTranslation);
-        String hoverText = HideAndSeek.config().getString("plugin_message.game.starting.set_disguise.hover", "%disguise%")
-                .replace("%disguise%", disguiseTranslation);
+        String hoverText = MsgUtil.color(
+                HideAndSeek.config().getString("plugin_message.game.starting.set_disguise.hover", "%disguise%")
+                        .replace("%disguise%", disguiseTranslation)
+        );
         component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text[]{new Text(hoverText)}));
         component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/hs disguise " + disguise));
         return component;
@@ -161,8 +190,9 @@ public class GameRunnable implements Runnable {
             seekPlayers.remove(uuid);
         } else {
             hideTeam.removePlayer(Bukkit.getPlayer(uuid));
-            hidePlayerDisguiseMap.get(uuid).removeDisguise();
-            hidePlayerDisguiseMap.remove(uuid);
+            Disguise disguise = hidePlayerDisguiseMap.remove(uuid);
+            if (disguise != null)
+                disguise.removeDisguise();
             hidePlayers.remove(uuid);
         }
     }
@@ -193,12 +223,12 @@ public class GameRunnable implements Runnable {
     }
 
     public enum GameLifeCycle {
-        STARTING(20),
-        PLAYING(900),
-        END(10),
-        DEAD(-1);
+        STARTING(HideAndSeek.config().getLong("game_cycle.max_second.starting", 20)),
+        PLAYING(HideAndSeek.config().getLong("game_cycle.max_second.playing", 900)),
+        END(HideAndSeek.config().getLong("game_cycle.max_second.end", 10)),
+        DEAD(HideAndSeek.config().getLong("game_cycle.max_second.starting", -1));
 
-        private final long maxSecond;
+        private long maxSecond;
 
         GameLifeCycle(long maxSecond) {
             this.maxSecond = maxSecond;
@@ -206,6 +236,17 @@ public class GameRunnable implements Runnable {
 
         public long maxSecond() {
             return maxSecond;
+        }
+
+        public void setMaxSecond(long maxSecond) {
+            this.maxSecond = maxSecond;
+        }
+
+        public static void resetMaxSecond() {
+            STARTING.setMaxSecond(HideAndSeek.config().getLong("game_cycle.max_second.starting", 20));
+            PLAYING.setMaxSecond(HideAndSeek.config().getLong("game_cycle.max_second.playing", 900));
+            END.setMaxSecond(HideAndSeek.config().getLong("game_cycle.max_second.end", 10));
+            DEAD.setMaxSecond(HideAndSeek.config().getLong("game_cycle.max_second.starting", -1));
         }
 
     }

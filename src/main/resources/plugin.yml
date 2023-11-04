@@ -4,7 +4,7 @@ main: '${main}'
 api-version: 1.13
 load: POSTWORLD
 authors: [ YufiriaMazenta ]
-soft-depends: [ LibsDisguises ]
+depends: [ LibsDisguises ]
 folia-supported: true
 description: 躲猫猫!
 commands:
