@@ -147,6 +147,13 @@ public class GameRunnable implements Runnable {
             setGameLifeCycle(GameLifeCycle.END);
             return;
         }
+        if (seekPlayers.isEmpty()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Util.sendTitle(player, "", "plugin_message.game.playing.subtitle.all_seek_death");
+            }
+            setGameLifeCycle(GameLifeCycle.END);
+            return;
+        }
         if (timeSecond >= GameLifeCycle.PLAYING.maxSecond) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Util.sendTitle(player, "", "plugin_message.game.playing.subtitle.hide_win");

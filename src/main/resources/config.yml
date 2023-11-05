@@ -23,13 +23,14 @@ plugin_message:
         msg: "&8&l>[&a&l%disguise%&8&l]<"
         seek_hint: "&#FED8E2&l本局可变身为："
       subtitle:
-        hide: "&#FED8E2&l躲藏时间，请躲藏者尽快寻找躲藏位置！"
-        seek: "&#FED8E2&l躲藏时间，请在倒计时结束后开始寻找"
-        end: "&#FED8E2&l躲藏时间结束！开始寻找"
+        hide: "&#FED8E2&l躲藏时间，请躲藏者尽快抓捕躲藏位置！"
+        seek: "&#FED8E2&l躲藏时间，请在倒计时结束后开始抓捕"
+        end: "&#FED8E2&l躲藏时间结束！开始抓捕"
     playing:
       subtitle:
         hide_death: "&#FED8E2&l你已死亡，进入旁观者模式"
-        all_hide_death: "&#FED8E2&l所有的躲藏者均已被找到，寻找者胜利！"
+        all_hide_death: "&#FED8E2&l所有的躲藏者均已被找到，抓捕者胜利！"
+        all_seek_death: "&#FED8E2&l所有的抓捕者均已死亡，躲藏方胜利！"
         hide_win: "&#FED8E2&l躲藏者成功躲到了游戏结束，躲藏者胜利！"
     end:
       subtitle: "&#FED8E2&l将在倒计时结束后结束游戏"

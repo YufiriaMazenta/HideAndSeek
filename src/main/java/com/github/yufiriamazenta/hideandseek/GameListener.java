@@ -75,6 +75,8 @@ public class GameListener implements Listener {
             HideAndSeek.INSTANCE.gameRunnable().removePlayer(uuid);
             event.getEntity().setAllowFlight(false);
             event.getEntity().sendTitle("", MsgUtil.color(HideAndSeek.config().getString("plugin_message.game.playing.subtitle.hide_death", "")));
+        } else if (HideAndSeek.INSTANCE.gameRunnable().seekPlayers().contains(uuid)) {
+            HideAndSeek.INSTANCE.gameRunnable().removePlayer(uuid);
         }
     }
 
