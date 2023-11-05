@@ -12,7 +12,7 @@ plugin_message:
       game_not_start: "&c&l游戏未开始，无法进行伪装"
       only_player: "&c&l只有玩家才能使用这个命令"
       not_select_disguise: "&c&l请选择一个伪装对象"
-      not_hider: "&c&l你不是躲藏者，无法变身"
+      not_hide: "&c&l你不是躲藏者，无法变身"
   game:
     boss_bar:
       title: "&#FED8E2&l当前阶段剩余时间: &a&l%time% &#FED8E2&l秒"
@@ -39,7 +39,7 @@ plugin_message:
     hay_block: "方块:干草块"
     jack_o_lantern: "方块:南瓜灯"
     smithing_table: "方块:锻造台"
-    grind_stone: "方块:砂轮"
+    grindstone: "方块:砂轮"
     fletching_table: "方块:制箭台"
     campfire: "方块:营火"
     bee_nest: "方块:蜂箱"
