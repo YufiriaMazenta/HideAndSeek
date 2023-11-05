@@ -52,11 +52,6 @@ public enum DisguiseCommand implements ISubCommand {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, List<String> args) {
-        return new ArrayList<>(DisguisesHooker.disguiseFuncMap().keySet());
-    }
-
-    @Override
     public void setPerm(String s) {}
 
     @Override
