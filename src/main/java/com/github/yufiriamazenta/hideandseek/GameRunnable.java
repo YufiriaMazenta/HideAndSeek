@@ -69,10 +69,10 @@ public class GameRunnable implements Runnable {
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("seek").unregister();
 
         hideTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("hide");
-        hideTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+        hideTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
         hideTeam.setColor(ChatColor.AQUA);
         seekTeam = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam("seek");
-        seekTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
+        seekTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
         seekTeam.setColor(ChatColor.RED);
 
         for (Player player : playerList) {
@@ -169,7 +169,7 @@ public class GameRunnable implements Runnable {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null)
                     continue;
-                sendSeekerDisguiseMsgHint(player);
+                sendSeekerDisguiseHint(player);
                 player.getInventory().addItem(new ItemStack(Material.BOW));
                 player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (GameLifeCycle.PLAYING.maxSecond / 20)));
             }
@@ -211,8 +211,8 @@ public class GameRunnable implements Runnable {
         }
     }
 
-    private void sendSeekerDisguiseMsgHint(Player player) {
-        MsgUtil.sendMsg(player, HideAndSeek.config().getString("plugin_message.game.starting.set_disguise.seek_hind"));
+    private void sendSeekerDisguiseHint(Player player) {
+        MsgUtil.sendMsg(player, HideAndSeek.config().getString("plugin_message.game.starting.set_disguise.seek_hint"));
         for (BaseComponent disguise : disguiseTextComponents) {
             BaseComponent seekDisguiseHint = new TextComponent(disguise.toLegacyText());
             player.spigot().sendMessage(seekDisguiseHint);

@@ -21,7 +21,7 @@ plugin_message:
         hint: "&#FED8E2&l请点击选择你要变身的方块/实体，只能变身一次哦"
         hover: "&#FED8E2&l点击变身为%disguise%"
         msg: "&8&l>[&a&l%disguise%&8&l]<"
-        seek_hind: "&#FED8E2&l本局可变身为："
+        seek_hint: "&#FED8E2&l本局可变身为："
       subtitle:
         hide: "&#FED8E2&l躲藏时间，请躲藏者尽快寻找躲藏位置！"
         seek: "&#FED8E2&l躲藏时间，请在倒计时结束后开始寻找"
@@ -63,6 +63,13 @@ plugin_message:
 game_cycle:
   max_second:
     starting: 30
-    playing: 600
+    playing: 900
     END: 10
     DEAD: -1
+seek_swap_skill:
+  radius:
+    x: 2
+    y: 2
+    z: 2
+  hit_damage: 2
+  miss_damage: 1

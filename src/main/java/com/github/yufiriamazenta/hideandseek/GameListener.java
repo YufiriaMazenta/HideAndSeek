@@ -9,6 +9,8 @@ import me.libraryaddict.disguise.events.DisguiseEvent;
 import me.libraryaddict.disguise.events.UndisguiseEvent;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -158,6 +160,35 @@ public class GameListener implements Listener {
             double toZ = event.getTo().getZ();
             if (!(fromX == toX && fromY == toY && fromZ == toZ))
                 event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onSeekSwapHand(PlayerSwapHandItemsEvent event) {
+        if (!HideAndSeek.INSTANCE.isGameRunning())
+            return;
+        GameRunnable gameRunnable = HideAndSeek.INSTANCE.gameRunnable();
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+        if (!gameRunnable.seekPlayers().contains(uuid))
+            return;
+
+        int attackNum = 0;
+        for (Entity entity : player.getNearbyEntities(
+                HideAndSeek.config().getDouble("seek_swap_skill.radius.x"),
+                HideAndSeek.config().getDouble("seek_swap_skill.radius.y"),
+                HideAndSeek.config().getDouble("seek_swap_skill.radius.z")
+        )) {
+            UUID uuid1 = entity.getUniqueId();
+            if (gameRunnable.hidePlayers().contains(uuid1)) {
+                player.attack(entity);
+                attackNum ++;
+            }
+        }
+        if (attackNum > 0) {
+            player.damage(HideAndSeek.config().getDouble("seek_swap_skill.hit_damage", 2));
+        } else {
+            player.damage(HideAndSeek.config().getDouble("seek_swap_skill.hit_damage", 1));
         }
     }
 
