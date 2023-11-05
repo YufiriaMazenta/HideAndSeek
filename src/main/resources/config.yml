@@ -59,7 +59,8 @@ plugin_message:
     pig: "生物:猪"
     cow: "生物:牛"
     bee: "生物:蜜蜂"
-    boat: "船"
+    squid: "生物:鱿鱼"
+    boat: "特殊:船"
 game_cycle:
   max_second:
     starting: 30

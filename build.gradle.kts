@@ -25,7 +25,7 @@ dependencies {
 }
 
 group = "com.github.yufiriamazenta"
-version = "1.0.0-dev11"
+version = "1.0.0-dev12"
 var mainClass = "${rootProject.group}.${rootProject.name.lowercase()}.HideAndSeek"
 var pluginVersion: String = version.toString() + "-" + SimpleDateFormat("yyyyMMdd").format(System.currentTimeMillis())
 java.sourceCompatibility = JavaVersion.VERSION_17

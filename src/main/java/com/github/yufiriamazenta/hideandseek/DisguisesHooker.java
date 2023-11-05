@@ -36,16 +36,17 @@ public class DisguisesHooker {
         regDisguise("grass", player -> genBlockDisguise(player, Material.GRASS));
         regDisguise("amethyst_cluster", player -> genBlockDisguise(player, Material.AMETHYST_CLUSTER));
         regDisguise("cake", player -> genBlockDisguise(player, Material.CAKE));
+        regDisguise("boat", player -> genMiscDisguise(player, DisguiseType.BOAT));
 
         regDisguise("cod", player -> genMobDisguise(player, DisguiseType.COD));
         regDisguise("salmon", player -> genMobDisguise(player, DisguiseType.SALMON));
         regDisguise("tropical", player -> genMobDisguise(player, DisguiseType.TROPICAL_FISH));
         regDisguise("axolotl", player -> genMobDisguise(player, DisguiseType.AXOLOTL));
-        regDisguise("boat", player -> genMobDisguise(player, DisguiseType.BOAT));
         regDisguise("sheep", player -> genMobDisguise(player, DisguiseType.SHEEP));
         regDisguise("pig", player -> genMobDisguise(player, DisguiseType.PIG));
         regDisguise("cow", player -> genMobDisguise(player, DisguiseType.COW));
         regDisguise("bee", player -> genMobDisguise(player, DisguiseType.BEE));
+        regDisguise("squid", player -> genMobDisguise(player, DisguiseType.SQUID));
     }
 
     public static Disguise disguises(Player player, String type) {
@@ -69,6 +70,13 @@ public class DisguisesHooker {
 
     private static MiscDisguise genBlockDisguise(Player player, Material material) {
         MiscDisguise disguise = new MiscDisguise(DisguiseType.FALLING_BLOCK, material);
+        disguise.setEntity(player);
+        disguise.startDisguise();
+        return disguise;
+    }
+
+    private static MiscDisguise genMiscDisguise(Player player, DisguiseType disguiseType) {
+        MiscDisguise disguise = new MiscDisguise(disguiseType);
         disguise.setEntity(player);
         disguise.startDisguise();
         return disguise;

@@ -185,11 +185,13 @@ public class GameListener implements Listener {
                 attackNum ++;
             }
         }
+        double damage;
         if (attackNum > 0) {
-            player.damage(HideAndSeek.config().getDouble("seek_swap_skill.hit_damage", 2));
+            damage = HideAndSeek.config().getDouble("seek_swap_skill.hit_damage", 2);
         } else {
-            player.damage(HideAndSeek.config().getDouble("seek_swap_skill.hit_damage", 1));
+            damage = HideAndSeek.config().getDouble("seek_swap_skill.miss_damage", 1);
         }
+        player.setHealth(Math.max(player.getHealth() - damage, 0));
     }
 
     @EventHandler
