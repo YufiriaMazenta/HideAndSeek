@@ -33,13 +33,15 @@ public class DisguisesHooker {
         regDisguise("blue_orchid", player -> genBlockDisguise(player, Material.BLUE_ORCHID));
         regDisguise("allium", player -> genBlockDisguise(player, Material.ALLIUM));
         regDisguise("rose_bush", player -> genBlockDisguise(player, Material.ROSE_BUSH));
+        regDisguise("grass", player -> genBlockDisguise(player, Material.GRASS));
+        regDisguise("amethyst_cluster", player -> genBlockDisguise(player, Material.AMETHYST_CLUSTER));
+        regDisguise("cake", player -> genBlockDisguise(player, Material.CAKE));
 
         regDisguise("cod", player -> genMobDisguise(player, DisguiseType.COD));
         regDisguise("salmon", player -> genMobDisguise(player, DisguiseType.SALMON));
         regDisguise("tropical", player -> genMobDisguise(player, DisguiseType.TROPICAL_FISH));
         regDisguise("axolotl", player -> genMobDisguise(player, DisguiseType.AXOLOTL));
-        regDisguise("pufferfish", player -> genMobDisguise(player, DisguiseType.PUFFERFISH));
-        regDisguise("tadpole", player -> genMobDisguise(player, DisguiseType.TADPOLE));
+        regDisguise("boat", player -> genMobDisguise(player, DisguiseType.BOAT));
         regDisguise("sheep", player -> genMobDisguise(player, DisguiseType.SHEEP));
         regDisguise("pig", player -> genMobDisguise(player, DisguiseType.PIG));
         regDisguise("cow", player -> genMobDisguise(player, DisguiseType.COW));

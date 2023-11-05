@@ -71,6 +71,7 @@ public class GameListener implements Listener {
         UUID uuid = event.getEntity().getUniqueId();
         if (HideAndSeek.INSTANCE.gameRunnable().hidePlayers().contains(uuid)) {
             HideAndSeek.INSTANCE.gameRunnable().removePlayer(uuid);
+            event.getEntity().setAllowFlight(false);
             event.getEntity().sendTitle("", MsgUtil.color(HideAndSeek.config().getString("plugin_message.game.playing.subtitle.hide_death", "")));
         }
     }
@@ -122,6 +123,8 @@ public class GameListener implements Listener {
             return;
         }
         gameRunnable.hidePlayerLockedMap().put(uuid, true);
+        player.setAllowFlight(true);
+        player.setFlying(true);
 
         if (gameRunnable.hidePlayerDisguiseMap().containsKey(uuid)) {
             Disguise disguise = gameRunnable.hidePlayerDisguiseMap().get(uuid);
@@ -129,9 +132,8 @@ public class GameListener implements Listener {
                 Location location = player.getLocation().clone();
                 location.setX(location.getBlockX() + 0.5);
                 location.setZ(location.getBlockZ() + 0.5);
+                location.setY(location.getBlockY());
                 CrypticLib.platform().teleportPlayer(player, location);
-                player.setAllowFlight(true);
-                player.setFlying(true);
             }
         }
     }

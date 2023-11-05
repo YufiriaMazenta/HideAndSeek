@@ -1,6 +1,7 @@
 package com.github.yufiriamazenta.hideandseek.cmd.disguises;
 
 import com.github.yufiriamazenta.hideandseek.DisguisesHooker;
+import com.github.yufiriamazenta.hideandseek.GameRunnable;
 import com.github.yufiriamazenta.hideandseek.HideAndSeek;
 import crypticlib.command.ISubCommand;
 import crypticlib.util.MsgUtil;
@@ -35,13 +36,18 @@ public enum DisguiseCommand implements ISubCommand {
             return true;
         }
         UUID uuid = player.getUniqueId();
-        if (HideAndSeek.INSTANCE.gameRunnable().hidePlayerDisguiseMap().containsKey(uuid))
+        GameRunnable gameRunnable = HideAndSeek.INSTANCE.gameRunnable();
+        if (!gameRunnable.hidePlayers().contains(uuid)) {
+            MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.disguise.not_hide"));
+            return true;
+        }
+        if (gameRunnable.hidePlayerDisguiseMap().containsKey(uuid))
             return true;
         if (args.isEmpty()) {
             MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.disguise.not_select_disguise"));
             return true;
         }
-        HideAndSeek.INSTANCE.gameRunnable().hidePlayerDisguiseMap().put(uuid, DisguisesHooker.disguises(player, args.get(0)));
+        gameRunnable.hidePlayerDisguiseMap().put(uuid, DisguisesHooker.disguises(player, args.get(0)));
         return true;
     }
 

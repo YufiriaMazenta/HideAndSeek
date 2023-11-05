@@ -12,6 +12,7 @@ plugin_message:
       game_not_start: "&c&l游戏未开始，无法进行伪装"
       only_player: "&c&l只有玩家才能使用这个命令"
       not_select_disguise: "&c&l请选择一个伪装对象"
+      not_hider: "&c&l你不是躲藏者，无法变身"
   game:
     boss_bar:
       title: "&#FED8E2&l当前阶段剩余时间: &a&l%time% &#FED8E2&l秒"
@@ -47,16 +48,18 @@ plugin_message:
     blue_orchid: "方块:兰花"
     allium: "方块:绒球葱"
     rose_bush: "方块:玫瑰丛"
+    grass: "方块:草"
+    amethyst_cluster: "方块:紫水晶簇"
+    cake: "方块:蛋糕"
     cod: "生物:鳕鱼"
     salmon: "生物:鲑鱼"
     tropical: "生物:热带鱼"
     axolotl: "生物:美西螈"
-    pufferfish: "生物:河豚"
-    tadpole: "生物:蝌蚪"
     sheep: "生物:绵羊"
     pig: "生物:猪"
     cow: "生物:牛"
     bee: "生物:蜜蜂"
+    boat: "船"
 game_cycle:
   max_second:
     starting: 30

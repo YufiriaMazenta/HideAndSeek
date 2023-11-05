@@ -171,7 +171,7 @@ public class GameRunnable implements Runnable {
                     continue;
                 sendSeekerDisguiseMsgHint(player);
                 player.getInventory().addItem(new ItemStack(Material.BOW));
-                player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (GameLifeCycle.PLAYING.maxSecond / 60)));
+                player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (GameLifeCycle.PLAYING.maxSecond / 20)));
             }
         }
 
