@@ -19,7 +19,7 @@ public enum GameStartCommand implements ISubCommand {
     INSTANCE;
 
     @Override
-    public String getSubCommandName() {
+    public String subCommandName() {
         return "start";
     }
 
@@ -44,15 +44,12 @@ public enum GameStartCommand implements ISubCommand {
     }
 
     @Override
-    public String getPerm() {
+    public String perm() {
         return "hideandseek.command.game.start";
     }
 
     @Override
-    public void setPerm(String s) {}
-
-    @Override
-    public @NotNull Map<String, ISubCommand> getSubCommands() {
+    public @NotNull Map<String, ISubCommand> subCommands() {
         return new HashMap<>();
     }
 

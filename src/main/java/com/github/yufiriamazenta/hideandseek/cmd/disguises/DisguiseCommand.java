@@ -16,12 +16,12 @@ public enum DisguiseCommand implements ISubCommand {
     INSTANCE;
 
     @Override
-    public String getSubCommandName() {
+    public String subCommandName() {
         return "disguise";
     }
 
     @Override
-    public String getPerm() {
+    public String perm() {
         return "hideandseek.command.disguise";
     }
 
@@ -52,10 +52,7 @@ public enum DisguiseCommand implements ISubCommand {
     }
 
     @Override
-    public void setPerm(String s) {}
-
-    @Override
-    public @NotNull Map<String, ISubCommand> getSubCommands() {
+    public @NotNull Map<String, ISubCommand> subCommands() {
         return new HashMap<>();
     }
 

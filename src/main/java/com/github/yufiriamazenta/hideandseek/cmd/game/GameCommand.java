@@ -18,20 +18,17 @@ public enum GameCommand implements ISubCommand {
     }
 
     @Override
-    public String getSubCommandName() {
+    public String subCommandName() {
         return "game";
     }
 
     @Override
-    public String getPerm() {
+    public String perm() {
         return "hideandseek.command.game";
     }
 
     @Override
-    public void setPerm(String s) {}
-
-    @Override
-    public @NotNull Map<String, ISubCommand> getSubCommands() {
+    public @NotNull Map<String, ISubCommand> subCommands() {
         return subCommandMap;
     }
 }

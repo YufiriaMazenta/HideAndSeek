@@ -7,9 +7,3 @@ authors: [ YufiriaMazenta ]
 depends: [ LibsDisguises ]
 folia-supported: true
 description: 躲猫猫!
-commands:
-  hideandseek:
-    aliases:
-      - hs
-      - has
-    permission: hideandseek.command

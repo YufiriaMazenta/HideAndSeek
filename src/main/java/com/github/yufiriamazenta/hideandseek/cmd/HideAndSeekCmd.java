@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@BukkitCommand(command = "hideandseek")
+@BukkitCommand(name = "hideandseek", perm = "hideandseek.command", alias = {"has", "hs"})
 public class HideAndSeekCmd implements IPluginCommand {
 
     private final Map<String, ISubCommand> subCommandMap;
@@ -31,7 +31,8 @@ public class HideAndSeekCmd implements IPluginCommand {
     }
 
     @Override
-    public @NotNull Map<String, ISubCommand> getSubCommands() {
+    public @NotNull Map<String, ISubCommand> subCommands() {
         return subCommandMap;
     }
+
 }

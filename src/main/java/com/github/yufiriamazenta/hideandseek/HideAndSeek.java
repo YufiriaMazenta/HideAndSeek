@@ -50,7 +50,7 @@ public class HideAndSeek extends BukkitPlugin {
         gameRunnable = null;
         gameTask = null;
         for (Player player : Bukkit.getOnlinePlayers()) {
-            CrypticLib.platform().teleportPlayer(player, player.getWorld().getSpawnLocation());
+            CrypticLib.platform().teleportEntity(player, player.getWorld().getSpawnLocation());
             Util.clearPlayerEffect(player);
             player.getInventory().clear();
             player.updateInventory();

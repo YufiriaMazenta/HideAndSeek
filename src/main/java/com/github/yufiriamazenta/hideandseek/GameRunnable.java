@@ -87,12 +87,12 @@ public class GameRunnable implements Runnable {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 100, false, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, -100, false, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 100, false, false, false));
-            CrypticLib.platform().teleportPlayer(player, player.getWorld().getSpawnLocation());
+            CrypticLib.platform().teleportEntity(player, player.getWorld().getSpawnLocation());
             seekPlayers.add(player.getUniqueId());
             seekTeam.addPlayer(player);
         }
         for (Player player : playerList) {
-            CrypticLib.platform().teleportPlayer(player, player.getWorld().getSpawnLocation());
+            CrypticLib.platform().teleportEntity(player, player.getWorld().getSpawnLocation());
             player.setGameMode(GameMode.ADVENTURE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false, false));
             player.setAllowFlight(false);

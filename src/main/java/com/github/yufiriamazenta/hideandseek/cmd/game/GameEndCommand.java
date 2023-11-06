@@ -15,17 +15,14 @@ public enum GameEndCommand implements ISubCommand {
     INSTANCE;
 
     @Override
-    public String getSubCommandName() {
+    public String subCommandName() {
         return "end";
     }
 
     @Override
-    public String getPerm() {
+    public String perm() {
         return "hideandseek.command.game.end";
     }
-
-    @Override
-    public void setPerm(String s) {}
 
     @Override
     public boolean onCommand(CommandSender sender, List<String> args) {
@@ -39,7 +36,7 @@ public enum GameEndCommand implements ISubCommand {
     }
 
     @Override
-    public @NotNull Map<String, ISubCommand> getSubCommands() {
+    public @NotNull Map<String, ISubCommand> subCommands() {
         return new HashMap<>();
     }
 }

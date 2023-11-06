@@ -137,7 +137,7 @@ public class GameListener implements Listener {
                 location.setX(location.getBlockX() + 0.5);
                 location.setZ(location.getBlockZ() + 0.5);
                 location.setY(location.getBlockY());
-                CrypticLib.platform().teleportPlayer(player, location);
+                CrypticLib.platform().teleportEntity(player, location);
             }
         }
     }
