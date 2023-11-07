@@ -1,7 +1,7 @@
 package com.github.yufiriamazenta.hideandseek.cmd.game;
 
 import com.github.yufiriamazenta.hideandseek.HideAndSeek;
-import crypticlib.command.ISubCommand;
+import crypticlib.command.ISubCmdExecutor;
 import crypticlib.util.MsgUtil;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum GameEndCommand implements ISubCommand {
+public enum GameEndCommand implements ISubCmdExecutor {
 
     INSTANCE;
 
@@ -36,7 +36,7 @@ public enum GameEndCommand implements ISubCommand {
     }
 
     @Override
-    public @NotNull Map<String, ISubCommand> subCommands() {
+    public @NotNull Map<String, ISubCmdExecutor> subCommands() {
         return new HashMap<>();
     }
 }

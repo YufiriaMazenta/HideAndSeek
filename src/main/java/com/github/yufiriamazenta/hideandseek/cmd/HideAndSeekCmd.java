@@ -1,27 +1,25 @@
 package com.github.yufiriamazenta.hideandseek.cmd;
 
 import com.github.yufiriamazenta.hideandseek.HideAndSeek;
-import com.github.yufiriamazenta.hideandseek.cmd.disguises.DisguiseCommand;
 import com.github.yufiriamazenta.hideandseek.cmd.game.GameCommand;
 import com.github.yufiriamazenta.hideandseek.cmd.reload.ReloadCommand;
 import crypticlib.annotations.BukkitCommand;
-import crypticlib.command.IPluginCommand;
-import crypticlib.command.ISubCommand;
+import crypticlib.command.IPluginCmdExecutor;
+import crypticlib.command.ISubCmdExecutor;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@BukkitCommand(name = "hideandseek", perm = "hideandseek.command", alias = {"has", "hs"})
-public class HideAndSeekCmd implements IPluginCommand {
+@BukkitCommand(name = "hideandseek", permission = "hideandseek.command", alias = {"has", "hs"})
+public class HideAndSeekCmd implements IPluginCmdExecutor {
 
-    private final Map<String, ISubCommand> subCommandMap;
+    private final Map<String, ISubCmdExecutor> subCommandMap;
 
     private HideAndSeekCmd() {
         subCommandMap = new ConcurrentHashMap<>();
         regSubCommand(GameCommand.INSTANCE);
-        regSubCommand(DisguiseCommand.INSTANCE);
         regSubCommand(ReloadCommand.INSTANCE);
     }
 
@@ -31,7 +29,7 @@ public class HideAndSeekCmd implements IPluginCommand {
     }
 
     @Override
-    public @NotNull Map<String, ISubCommand> subCommands() {
+    public @NotNull Map<String, ISubCmdExecutor> subCommands() {
         return subCommandMap;
     }
 

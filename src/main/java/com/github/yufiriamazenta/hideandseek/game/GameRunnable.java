@@ -1,5 +1,8 @@
-package com.github.yufiriamazenta.hideandseek;
+package com.github.yufiriamazenta.hideandseek.game;
 
+import com.github.yufiriamazenta.hideandseek.DisguisesHooker;
+import com.github.yufiriamazenta.hideandseek.HideAndSeek;
+import com.github.yufiriamazenta.hideandseek.Util;
 import crypticlib.CrypticLib;
 import crypticlib.util.MsgUtil;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
@@ -18,7 +21,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
 
 import java.util.*;
@@ -33,6 +35,7 @@ public class GameRunnable implements Runnable {
     private final List<UUID> seekPlayers;
     private long ticks, tempTicks;
     private final Random random;
+    private final GameMap gameMap = null;//todo
     private Team hideTeam, seekTeam;
     private final List<BaseComponent> disguiseTextComponents;
     private BossBar timeBossBar;
@@ -109,13 +112,13 @@ public class GameRunnable implements Runnable {
             return;
         }
         long timeSecond = tempTicks / 20;
-        long remainingSecond = gameLifeCycle.maxSecond - timeSecond;
+        long remainingSecond = gameLifeCycle.maxSecond() - timeSecond;
         String bossBarTitle = MsgUtil.color(
                 HideAndSeek.config().getString("plugin_message.game.boss_bar.title", "%time%")
                         .replace("%time%", "" + remainingSecond)
         );
         timeBossBar.setTitle(bossBarTitle);
-        timeBossBar.setProgress((double) timeSecond / gameLifeCycle.maxSecond);
+        timeBossBar.setProgress((double) timeSecond / gameLifeCycle.maxSecond());
         switch (gameLifeCycle) {
             case STARTING -> tickLifeCycleStarting(timeSecond);
             case PLAYING -> tickLifeCyclePlaying(timeSecond);
@@ -130,11 +133,11 @@ public class GameRunnable implements Runnable {
     private void tickLifeCycleEnd(long timeSecond) {
         if (timeSecond < 3)
             return;
-        long countdown = GameLifeCycle.END.maxSecond - timeSecond;
+        long countdown = GameLifeCycle.END.maxSecond() - timeSecond;
         for (Player player : Bukkit.getOnlinePlayers()) {
             Util.sendTitle(player, "&#FED8E2&l" + countdown, "plugin_message.game.end.subtitle");
         }
-        if (timeSecond >= gameLifeCycle.maxSecond) {
+        if (timeSecond >= gameLifeCycle.maxSecond()) {
             HideAndSeek.INSTANCE.endGame();
         }
     }
@@ -154,7 +157,7 @@ public class GameRunnable implements Runnable {
             setGameLifeCycle(GameLifeCycle.END);
             return;
         }
-        if (timeSecond >= GameLifeCycle.PLAYING.maxSecond) {
+        if (timeSecond >= GameLifeCycle.PLAYING.maxSecond()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Util.sendTitle(player, "", "plugin_message.game.playing.subtitle.hide_win");
             }
@@ -178,15 +181,15 @@ public class GameRunnable implements Runnable {
                     continue;
                 sendSeekerDisguiseHint(player);
                 player.getInventory().addItem(new ItemStack(Material.BOW));
-                player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (GameLifeCycle.PLAYING.maxSecond / 20)));
+                player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (GameLifeCycle.PLAYING.maxSecond() / 20)));
             }
         }
 
-        int countdown = (int) (gameLifeCycle.maxSecond - timeSecond);
+        int countdown = (int) (gameLifeCycle.maxSecond() - timeSecond);
         Util.sendTitle(hidePlayers, "&#FED8E2&l" + countdown, "plugin_message.game.starting.subtitle.hide");
         Util.sendTitle(seekPlayers, "&#FED8E2&l" + countdown, "plugin_message.game.starting.subtitle.seek");
 
-        if (timeSecond >= gameLifeCycle.maxSecond) {
+        if (timeSecond >= gameLifeCycle.maxSecond()) {
             Util.sendTitle(hidePlayers, "", "plugin_message.game.starting.subtitle.end");
             Util.sendTitle(seekPlayers, "", "plugin_message.game.starting.subtitle.end");
             for (UUID uuid : hidePlayers) {
@@ -292,39 +295,6 @@ public class GameRunnable implements Runnable {
 
     public Map<UUID, Boolean> hidePlayerLockedMap() {
         return hidePlayerLockedMap;
-    }
-
-    public enum GameLifeCycle {
-        STARTING(HideAndSeek.config().getLong("game_cycle.max_second.starting", 20)),
-        PLAYING(HideAndSeek.config().getLong("game_cycle.max_second.playing", 900)),
-        END(HideAndSeek.config().getLong("game_cycle.max_second.end", 10)),
-        DEAD(HideAndSeek.config().getLong("game_cycle.max_second.starting", -1));
-
-        private long maxSecond;
-
-        GameLifeCycle(long maxSecond) {
-            this.maxSecond = maxSecond;
-        }
-
-        public long maxSecond() {
-            return maxSecond;
-        }
-
-        public void setMaxSecond(long maxSecond) {
-            this.maxSecond = maxSecond;
-        }
-
-        public static void resetMaxSecond() {
-            STARTING.setMaxSecond(HideAndSeek.config().getLong("game_cycle.max_second.starting", 20));
-            PLAYING.setMaxSecond(HideAndSeek.config().getLong("game_cycle.max_second.playing", 900));
-            END.setMaxSecond(HideAndSeek.config().getLong("game_cycle.max_second.end", 10));
-            DEAD.setMaxSecond(HideAndSeek.config().getLong("game_cycle.max_second.starting", -1));
-        }
-
-    }
-
-    public enum GameTeam {
-        HIDE, SEEK
     }
 
 }

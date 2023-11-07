@@ -1,15 +1,15 @@
 package com.github.yufiriamazenta.hideandseek.cmd.game;
 
-import crypticlib.command.ISubCommand;
+import crypticlib.command.ISubCmdExecutor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public enum GameCommand implements ISubCommand {
+public enum GameCommand implements ISubCmdExecutor {
 
     INSTANCE;
-    private final Map<String, ISubCommand> subCommandMap;
+    private final Map<String, ISubCmdExecutor> subCommandMap;
 
     GameCommand() {
         subCommandMap = new ConcurrentHashMap<>();
@@ -28,7 +28,7 @@ public enum GameCommand implements ISubCommand {
     }
 
     @Override
-    public @NotNull Map<String, ISubCommand> subCommands() {
+    public @NotNull Map<String, ISubCmdExecutor> subCommands() {
         return subCommandMap;
     }
 }

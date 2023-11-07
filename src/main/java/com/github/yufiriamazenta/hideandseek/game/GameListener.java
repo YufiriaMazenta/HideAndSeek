@@ -1,5 +1,6 @@
-package com.github.yufiriamazenta.hideandseek;
+package com.github.yufiriamazenta.hideandseek.game;
 
+import com.github.yufiriamazenta.hideandseek.HideAndSeek;
 import crypticlib.CrypticLib;
 import crypticlib.annotations.BukkitListener;
 import crypticlib.util.MsgUtil;
@@ -10,7 +11,6 @@ import me.libraryaddict.disguise.events.UndisguiseEvent;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

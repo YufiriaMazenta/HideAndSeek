@@ -1,8 +1,9 @@
 package com.github.yufiriamazenta.hideandseek;
 
+import com.github.yufiriamazenta.hideandseek.game.GameRunnable;
 import crypticlib.BukkitPlugin;
 import crypticlib.CrypticLib;
-import crypticlib.scheduler.task.ITask;
+import crypticlib.scheduler.task.ITaskWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.NamespacedKey;
@@ -13,7 +14,7 @@ import org.bukkit.scoreboard.Team;
 public class HideAndSeek extends BukkitPlugin {
 
     private GameRunnable gameRunnable = null;
-    private ITask gameTask = null;
+    private ITaskWrapper gameTask = null;
     public static HideAndSeek INSTANCE;
 
     @Override
@@ -77,7 +78,7 @@ public class HideAndSeek extends BukkitPlugin {
         this.gameRunnable = gameRunnable;
     }
 
-    public ITask gameTask() {
+    public ITaskWrapper gameTask() {
         return gameTask;
     }
 
