@@ -21,7 +21,7 @@ dependencies {
     compileOnly("org.jetbrains:annotations:24.0.1")
     compileOnly("org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT")
     compileOnly("LibsDisguises:LibsDisguises:10.0.38")
-    implementation("com.github.YufiriaMazenta:crypticlib:0.0.1")
+    implementation("com.crypticlib:crypticlib:0.0.1")
 }
 
 group = "com.github.yufiriamazenta"
