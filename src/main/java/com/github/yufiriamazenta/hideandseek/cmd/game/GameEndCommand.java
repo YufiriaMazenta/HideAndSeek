@@ -26,12 +26,12 @@ public enum GameEndCommand implements ISubCmdExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, List<String> args) {
-        if (!HideAndSeek.INSTANCE.isGameRunning()) {
-            MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.end.game_not_exist"));
-            return true;
-        }
-        HideAndSeek.INSTANCE.endGame();
-        MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.end.success"));
+//        if (!HideAndSeek.INSTANCE.isGameRunning()) {
+//            MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.end.game_not_exist"));
+//            return true;
+//        }
+//        HideAndSeek.INSTANCE.endGame();
+//        MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.end.success"));
         return true;
     }
 

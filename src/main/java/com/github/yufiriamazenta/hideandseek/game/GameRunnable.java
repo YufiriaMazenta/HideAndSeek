@@ -1,20 +1,13 @@
 package com.github.yufiriamazenta.hideandseek.game;
 
-import com.github.yufiriamazenta.hideandseek.DisguisesHooker;
 import com.github.yufiriamazenta.hideandseek.HideAndSeek;
 import com.github.yufiriamazenta.hideandseek.Util;
 import crypticlib.CrypticLib;
 import crypticlib.util.MsgUtil;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
@@ -29,44 +22,46 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GameRunnable implements Runnable {
 
     private GameLifeCycle gameLifeCycle;
+    private UUID gameUuid;
     private List<UUID> hidePlayers;
     private Map<UUID, Boolean> hidePlayerLockedMap;
     private Map<GameLifeCycle, Map<UUID, Disguise>> hidePlayerDisguiseMap;
     private List<UUID> seekPlayers;
     private long ticks, tempTicks;
     private Random random;
-    private GameMap gameMap;//todo
+    private final GameMap gameMap;
     private Team hideTeam, seekTeam;
-    private BossBar timeBossBar;
+    private BossBar timeBar;
 
     public GameRunnable(Collection<Player> playerList, int maxSeekNum, GameMap map) {
         this.gameMap = map;
-        initGame();
-
-
-        timeBossBar = Bukkit.createBossBar(
-                new NamespacedKey(HideAndSeek.INSTANCE, "time"),
-                MsgUtil.color(HideAndSeek.config().getString("plugin_message.game.boss_bar.title", "%time%")),
-                BarColor.PINK,
-                BarStyle.SOLID,
-                BarFlag.CREATE_FOG
-        );
-        for (Player player : playerList) {
-            timeBossBar.addPlayer(player);
-        }
-
-        initTeam(new ArrayList<>(playerList), maxSeekNum);
-        ticks = 0;
-        tempTicks = ticks;
+        initGame(new ArrayList<>(playerList), maxSeekNum);
     }
 
-    private void initGame() {
+    private void initGame(List<Player> playerList, int maxSeekNum) {
+        gameUuid = UUID.randomUUID();
         random = new Random();
+        ticks = 0;
+        tempTicks = ticks;
         gameLifeCycle = GameLifeCycle.STARTING;
+
         hidePlayers = new ArrayList<>();
         hidePlayerDisguiseMap = new ConcurrentHashMap<>();
         hidePlayerLockedMap = new ConcurrentHashMap<>();
         seekPlayers = new ArrayList<>();
+
+        initBossBar();
+        initTeam(playerList, maxSeekNum);
+    }
+
+    private void initBossBar() {
+        NamespacedKey key = new NamespacedKey(HideAndSeek.INSTANCE, gameUuid.toString());
+        timeBar = Bukkit.createBossBar(
+                key,
+                MsgUtil.color(HideAndSeek.config().getString("game_settings.time_bar.title", "%time%")),
+                BarColor.valueOf(HideAndSeek.config().getString("game_settings.time_bar.color", "red").toUpperCase(Locale.ENGLISH)),
+                BarStyle.SOLID
+        );
     }
 
     private void initTeam(List<Player> playerList, int maxSeekNum) {
@@ -121,17 +116,21 @@ public class GameRunnable implements Runnable {
                 HideAndSeek.config().getString("plugin_message.game.boss_bar.title", "%time%")
                         .replace("%time%", "" + remainingSecond)
         );
-        timeBossBar.setTitle(bossBarTitle);
-        timeBossBar.setProgress((double) timeSecond / gameLifeCycle.maxSecond());
+        timeBar.setTitle(bossBarTitle);
+        timeBar.setProgress((double) timeSecond / gameLifeCycle.maxSecond());
         switch (gameLifeCycle) {
             case STARTING -> tickLifeCycleStarting(timeSecond);
             case PLAYING -> tickLifeCyclePlaying(timeSecond);
             case END -> tickLifeCycleEnd(timeSecond);
-            case DEAD -> HideAndSeek.INSTANCE.endGame();
+            case DEAD -> endGame();
         }
 
         tempTicks ++;
         ticks ++;
+    }
+
+    public void endGame() {
+
     }
 
     private void tickLifeCycleEnd(long timeSecond) {
@@ -142,7 +141,7 @@ public class GameRunnable implements Runnable {
             Util.sendTitle(player, "&#FED8E2&l" + countdown, "plugin_message.game.end.subtitle");
         }
         if (timeSecond >= gameLifeCycle.maxSecond()) {
-            HideAndSeek.INSTANCE.endGame();
+            endGame();
         }
     }
 
@@ -170,6 +169,7 @@ public class GameRunnable implements Runnable {
     }
 
     private void tickLifeCycleStarting(long timeSecond) {
+        //TODO
         if (timeSecond == 0) {
             for (UUID uuid : hidePlayers) {
                 if (hidePlayerDisguiseMap.containsKey(uuid))
@@ -252,11 +252,11 @@ public class GameRunnable implements Runnable {
     }
 
     public BossBar timeBossBar() {
-        return timeBossBar;
+        return timeBar;
     }
 
-    public void setTimeBossBar(BossBar timeBossBar) {
-        this.timeBossBar = timeBossBar;
+    public void setTimeBar(BossBar timeBar) {
+        this.timeBar = timeBar;
     }
 
     public Map<UUID, Boolean> hidePlayerLockedMap() {

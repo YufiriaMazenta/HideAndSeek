@@ -1,3 +1,22 @@
+game_settings:
+  game_cycle:
+    max_second:
+      starting: 30
+      playing: 450
+      playing_2: 450
+      END: 10
+      DEAD: -1
+  time_bar:
+    color: red
+    title: "&#FED8E2&l当前阶段剩余时间: &a&l%time% &#FED8E2&l秒"
+seek_swap_skill:
+  radius:
+    x: 2
+    y: 2
+    z: 2
+  hit_damage: 2
+  miss_damage: 1
+
 plugin_message:
   command:
     reload: "&a&l躲猫猫插件重载完毕"
@@ -62,16 +81,3 @@ plugin_message:
     bee: "生物:蜜蜂"
     squid: "生物:鱿鱼"
     boat: "特殊:船"
-game_cycle:
-  max_second:
-    starting: 30
-    playing: 900
-    END: 10
-    DEAD: -1
-seek_swap_skill:
-  radius:
-    x: 2
-    y: 2
-    z: 2
-  hit_damage: 2
-  miss_damage: 1
