@@ -20,7 +20,7 @@ public enum GameEndCommand implements ISubCmdExecutor {
     }
 
     @Override
-    public String perm() {
+    public String permission() {
         return "hideandseek.command.game.end";
     }
 

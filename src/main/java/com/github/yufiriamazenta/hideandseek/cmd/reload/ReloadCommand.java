@@ -29,7 +29,7 @@ public enum ReloadCommand implements ISubCmdExecutor {
     }
 
     @Override
-    public String perm() {
+    public String permission() {
         return "hideandseek.command.reload";
     }
 
