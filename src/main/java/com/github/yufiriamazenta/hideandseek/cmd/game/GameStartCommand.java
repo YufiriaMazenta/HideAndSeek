@@ -37,8 +37,9 @@ public enum GameStartCommand implements ISubCmdExecutor {
             MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.start.not_enough_player"));
             return true;
         }
-        GameRunnable gameRunnable = new GameRunnable((Collection<Player>) Bukkit.getOnlinePlayers(), maxSeekNum);
-        HideAndSeek.INSTANCE.startGame(gameRunnable);
+        //TODO
+//        GameRunnable gameRunnable = new GameRunnable((Collection<Player>) Bukkit.getOnlinePlayers(), maxSeekNum);
+//        HideAndSeek.INSTANCE.startGame(gameRunnable);
         MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.start.success"));
         return true;
     }

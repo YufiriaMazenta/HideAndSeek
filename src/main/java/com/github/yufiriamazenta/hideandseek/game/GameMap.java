@@ -7,6 +7,25 @@ public class GameMap {
     private Location spawnPoint;
     private double maxX, maxZ, minX, minZ;
 
+    public GameMap(Location spawnPoint, Location point1, Location point2) {
+        this.spawnPoint = spawnPoint;
+        if (point1.getX() > point2.getX()) {
+            this.maxX = point1.getX();
+            this.minX = point2.getX();
+        } else {
+            this.maxX = point2.getX();
+            this.minX = point1.getX();
+        }
+
+        if (point1.getZ() > point2.getZ()) {
+            this.maxZ = point1.getZ();
+            this.minZ = point2.getZ();
+        } else {
+            this.maxZ = point2.getZ();
+            this.minZ = point1.getZ();
+        }
+    }
+
     public GameMap(Location spawnPoint, double maxX, double maxZ, double minX, double minZ) {
         this.spawnPoint = spawnPoint;
         this.maxX = maxX;
@@ -59,5 +78,7 @@ public class GameMap {
         this.minZ = minZ;
         return this;
     }
+
+
 
 }
