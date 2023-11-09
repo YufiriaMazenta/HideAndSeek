@@ -4,30 +4,34 @@ import org.bukkit.Location;
 
 public class GameMap {
 
-    private Location spawnPoint;
+    private Location spawnLocation;
     private double maxX, maxZ, minX, minZ;
+    private String name;
+    private int maxPlayerNum, minPlayerNum;
 
-    public GameMap(Location spawnPoint, Location point1, Location point2) {
-        this.spawnPoint = spawnPoint;
-        if (point1.getX() > point2.getX()) {
-            this.maxX = point1.getX();
-            this.minX = point2.getX();
-        } else {
-            this.maxX = point2.getX();
-            this.minX = point1.getX();
-        }
+    private Runnable mapRunnable;//TODO
+    /**
+     * 使用此构造函数必须手动设置各种字段
+     * 否则会引起严重后果
+     */
+    public GameMap() {}
 
-        if (point1.getZ() > point2.getZ()) {
-            this.maxZ = point1.getZ();
-            this.minZ = point2.getZ();
-        } else {
-            this.maxZ = point2.getZ();
-            this.minZ = point1.getZ();
-        }
+    public GameMap(String name, int maxPlayerNum, int minPlayerNum, Location spawnLocation, Location point1, Location point2) {
+        this.name = name;
+        this.maxPlayerNum = maxPlayerNum;
+        this.minPlayerNum = minPlayerNum;
+        this.spawnLocation = spawnLocation;
+        this.maxX = Math.max(point1.getX(), point2.getX());
+        this.minX = Math.min(point1.getX(), point2.getX());
+        this.maxZ = Math.max(point1.getZ(), point2.getZ());
+        this.minZ = Math.min(point1.getZ(), point2.getZ());
     }
 
-    public GameMap(Location spawnPoint, double maxX, double maxZ, double minX, double minZ) {
-        this.spawnPoint = spawnPoint;
+    public GameMap(String name, int maxPlayerNum, int minPlayerNum, Location spawnLocation, double maxX, double maxZ, double minX, double minZ) {
+        this.name = name;
+        this.maxPlayerNum = maxPlayerNum;
+        this.minPlayerNum = minPlayerNum;
+        this.spawnLocation = spawnLocation;
         this.maxX = maxX;
         this.maxZ = maxZ;
         this.minX = minX;
@@ -35,11 +39,11 @@ public class GameMap {
     }
 
     public Location spawnPoint() {
-        return spawnPoint;
+        return spawnLocation;
     }
 
-    public GameMap setSpawnPoint(Location spawnPoint) {
-        this.spawnPoint = spawnPoint;
+    public GameMap setSpawnLocation(Location spawnLocation) {
+        this.spawnLocation = spawnLocation;
         return this;
     }
 
@@ -80,5 +84,30 @@ public class GameMap {
     }
 
 
+    public int maxPlayerNum() {
+        return maxPlayerNum;
+    }
 
+    public GameMap setMaxPlayerNum(int maxPlayerNum) {
+        this.maxPlayerNum = maxPlayerNum;
+        return this;
+    }
+
+    public int minPlayerNum() {
+        return minPlayerNum;
+    }
+
+    public GameMap setMinPlayerNum(int minPlayerNum) {
+        this.minPlayerNum = minPlayerNum;
+        return this;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public GameMap setName(String name) {
+        this.name = name;
+        return this;
+    }
 }

@@ -2,14 +2,8 @@ package com.github.yufiriamazenta.hideandseek;
 
 import com.github.yufiriamazenta.hideandseek.game.GameRunnable;
 import crypticlib.BukkitPlugin;
-import crypticlib.CrypticLib;
 import crypticlib.scheduler.task.ITaskWrapper;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Team;
 
 import java.util.Map;
 import java.util.UUID;

@@ -1,18 +1,9 @@
 package com.github.yufiriamazenta.hideandseek.cmd.game;
 
-import com.github.yufiriamazenta.hideandseek.game.GameRunnable;
-import com.github.yufiriamazenta.hideandseek.HideAndSeek;
 import crypticlib.command.ISubCmdExecutor;
-import crypticlib.util.MsgUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public enum GameStartCommand implements ISubCmdExecutor {
 
@@ -47,11 +38,6 @@ public enum GameStartCommand implements ISubCmdExecutor {
     @Override
     public String permission() {
         return "hideandseek.command.game.start";
-    }
-
-    @Override
-    public @NotNull Map<String, ISubCmdExecutor> subCommands() {
-        return new HashMap<>();
     }
 
 }

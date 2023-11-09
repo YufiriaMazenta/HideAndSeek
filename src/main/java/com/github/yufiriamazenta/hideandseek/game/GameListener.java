@@ -1,17 +1,8 @@
 package com.github.yufiriamazenta.hideandseek.game;
 
-import com.github.yufiriamazenta.hideandseek.HideAndSeek;
-import crypticlib.CrypticLib;
 import crypticlib.annotations.BukkitListener;
-import crypticlib.util.MsgUtil;
-import me.libraryaddict.disguise.disguisetypes.Disguise;
-import me.libraryaddict.disguise.disguisetypes.MiscDisguise;
 import me.libraryaddict.disguise.events.DisguiseEvent;
 import me.libraryaddict.disguise.events.UndisguiseEvent;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityAirChangeEvent;
@@ -20,10 +11,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
-import java.util.UUID;
 
 @BukkitListener
 public class GameListener implements Listener {
