@@ -2,14 +2,18 @@ package com.github.yufiriamazenta.hideandseek.game;
 
 import org.bukkit.Location;
 
+import java.util.List;
+import java.util.Map;
+
 public class GameMap {
 
     private Location spawnLocation;
     private double maxX, maxZ, minX, minZ;
     private String name;
     private int maxPlayerNum, minPlayerNum;
+    private Map<GameLifeCycle, Long> gameLifeCycleSecondMap;
+    private List<String> allowDisguises;
 
-    private Runnable mapRunnable;//TODO
     /**
      * 使用此构造函数必须手动设置各种字段
      * 否则会引起严重后果
@@ -45,6 +49,10 @@ public class GameMap {
     public GameMap setSpawnLocation(Location spawnLocation) {
         this.spawnLocation = spawnLocation;
         return this;
+    }
+
+    public Location spawnLocation() {
+        return spawnLocation;
     }
 
     public double maxX() {
@@ -110,4 +118,23 @@ public class GameMap {
         this.name = name;
         return this;
     }
+
+    public Map<GameLifeCycle, Long> gameLifeCycleSecondMap() {
+        return gameLifeCycleSecondMap;
+    }
+
+    public GameMap setGameLifeCycleSecondMap(Map<GameLifeCycle, Long> gameLifeCycleSecondMap) {
+        this.gameLifeCycleSecondMap = gameLifeCycleSecondMap;
+        return this;
+    }
+
+    public List<String> allowDisguises() {
+        return allowDisguises;
+    }
+
+    public GameMap setAllowDisguises(List<String> allowDisguises) {
+        this.allowDisguises = allowDisguises;
+        return this;
+    }
+
 }

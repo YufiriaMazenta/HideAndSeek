@@ -2,6 +2,7 @@ package com.github.yufiriamazenta.hideandseek.cmd;
 
 import com.github.yufiriamazenta.hideandseek.HideAndSeek;
 import com.github.yufiriamazenta.hideandseek.cmd.game.GameCommand;
+import com.github.yufiriamazenta.hideandseek.cmd.map.MapCommand;
 import com.github.yufiriamazenta.hideandseek.cmd.reload.ReloadCommand;
 import crypticlib.annotations.BukkitCommand;
 import crypticlib.command.IPluginCmdExecutor;
@@ -13,7 +14,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @BukkitCommand(name = "hideandseek", permission = "hideandseek.command", alias = {"has", "hs"})
-public class HideAndSeekCmd implements IPluginCmdExecutor {
+public enum HideAndSeekCmd implements IPluginCmdExecutor {
+
+    INSTANCE;
 
     private final Map<String, ISubCmdExecutor> subCommandMap;
 
@@ -21,6 +24,7 @@ public class HideAndSeekCmd implements IPluginCmdExecutor {
         subCommandMap = new ConcurrentHashMap<>();
         regSubCommand(GameCommand.INSTANCE);
         regSubCommand(ReloadCommand.INSTANCE);
+        regSubCommand(MapCommand.INSTANCE);
     }
 
     @Override

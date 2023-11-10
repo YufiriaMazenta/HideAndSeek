@@ -7,12 +7,12 @@ border_location:
 game_cycle:
   starting:
     max_second: 30
-    tick:
-      - actions
   playing:
     max_second: 450
   playing_2:
     max_second: 450
   end:
     max_second: 10
+allow_disguises:
+  - 'diamond_block'
 #TODO

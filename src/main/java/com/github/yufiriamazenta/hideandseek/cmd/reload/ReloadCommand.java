@@ -15,7 +15,7 @@ public enum ReloadCommand implements ISubCmdExecutor {
     @Override
     public boolean onCommand(CommandSender sender, List<String> args) {
         HideAndSeek.INSTANCE.reloadConfig();
-        GameLifeCycle.resetMaxSecond();
+        //TODO
         MsgUtil.sendMsg(sender, HideAndSeek.config().getString("plugin_message.command.reload"));
         return true;
     }
