@@ -21,6 +21,7 @@ public class HideAndSeek extends BukkitPlugin {
         INSTANCE = this;
         gameTaskMap = new ConcurrentHashMap<>();
         saveDefaultConfig();
+        Configs.reloadConfigs();
     }
 
     @Override

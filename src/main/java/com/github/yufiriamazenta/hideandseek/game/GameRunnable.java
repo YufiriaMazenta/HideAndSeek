@@ -111,13 +111,13 @@ public class GameRunnable implements Runnable {
             return;
         }
         long timeSecond = tempTicks / 20;
-        long remainingSecond = gameLifeCycle.maxSecond() - timeSecond;
-        String bossBarTitle = MsgUtil.color(
-                HideAndSeek.config().getString("plugin_message.game.boss_bar.title", "%time%")
-                        .replace("%time%", "" + remainingSecond)
-        );
-        timeBar.setTitle(bossBarTitle);
-        timeBar.setProgress((double) timeSecond / gameLifeCycle.maxSecond());
+//        long remainingSecond = gameLifeCycle.maxSecond() - timeSecond;
+//        String bossBarTitle = MsgUtil.color(
+//                HideAndSeek.config().getString("plugin_message.game.boss_bar.title", "%time%")
+//                        .replace("%time%", "" + remainingSecond)
+//        );
+//        timeBar.setTitle(bossBarTitle);
+//        timeBar.setProgress((double) timeSecond / gameLifeCycle.maxSecond());
         switch (gameLifeCycle) {
             case STARTING -> tickLifeCycleStarting(timeSecond);
             case PLAYING -> tickLifeCyclePlaying(timeSecond);
@@ -136,13 +136,13 @@ public class GameRunnable implements Runnable {
     private void tickLifeCycleEnd(long timeSecond) {
         if (timeSecond < 3)
             return;
-        long countdown = GameLifeCycle.END.maxSecond() - timeSecond;
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Util.sendTitle(player, "&#FED8E2&l" + countdown, "plugin_message.game.end.subtitle");
-        }
-        if (timeSecond >= gameLifeCycle.maxSecond()) {
-            endGame();
-        }
+//        long countdown = GameLifeCycle.END.maxSecond() - timeSecond;
+//        for (Player player : Bukkit.getOnlinePlayers()) {
+//            Util.sendTitle(player, "&#FED8E2&l" + countdown, "plugin_message.game.end.subtitle");
+//        }
+//        if (timeSecond >= gameLifeCycle.maxSecond()) {
+//            endGame();
+//        }
     }
 
     private void tickLifeCyclePlaying(long timeSecond) {
@@ -160,12 +160,12 @@ public class GameRunnable implements Runnable {
             setGameLifeCycle(GameLifeCycle.END);
             return;
         }
-        if (timeSecond >= GameLifeCycle.PLAYING.maxSecond()) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                Util.sendTitle(player, "", "plugin_message.game.playing.subtitle.hide_win");
-            }
-            setGameLifeCycle(GameLifeCycle.END);
-        }
+//        if (timeSecond >= GameLifeCycle.PLAYING.maxSecond()) {
+//            for (Player player : Bukkit.getOnlinePlayers()) {
+//                Util.sendTitle(player, "", "plugin_message.game.playing.subtitle.hide_win");
+//            }
+//            setGameLifeCycle(GameLifeCycle.END);
+//        }
     }
 
     private void tickLifeCycleStarting(long timeSecond) {
@@ -183,32 +183,32 @@ public class GameRunnable implements Runnable {
                 if (player == null)
                     continue;
                 player.getInventory().addItem(new ItemStack(Material.BOW));
-                player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (GameLifeCycle.PLAYING.maxSecond() / 20)));
+//                player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (GameLifeCycle.PLAYING.maxSecond() / 20)));
             }
         }
 
-        int countdown = (int) (gameLifeCycle.maxSecond() - timeSecond);
-        Util.sendTitle(hidePlayers, "&#FED8E2&l" + countdown, "plugin_message.game.starting.subtitle.hide");
-        Util.sendTitle(seekPlayers, "&#FED8E2&l" + countdown, "plugin_message.game.starting.subtitle.seek");
-
-        if (timeSecond >= gameLifeCycle.maxSecond()) {
-            Util.sendTitle(hidePlayers, "", "plugin_message.game.starting.subtitle.end");
-            Util.sendTitle(seekPlayers, "", "plugin_message.game.starting.subtitle.end");
-            for (UUID uuid : hidePlayers) {
-                Player player = Bukkit.getPlayer(uuid);
-                if (player == null)
-                    continue;
-                Util.clearPlayerEffect(player);
-            }
-            for (UUID uuid : seekPlayers) {
-                Player player = Bukkit.getPlayer(uuid);
-                if (player == null)
-                    continue;
-                Util.clearPlayerEffect(player);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 3, false, false, false));
-            }
-            setGameLifeCycle(GameLifeCycle.PLAYING);
-        }
+//        int countdown = (int) (gameLifeCycle.maxSecond() - timeSecond);
+//        Util.sendTitle(hidePlayers, "&#FED8E2&l" + countdown, "plugin_message.game.starting.subtitle.hide");
+//        Util.sendTitle(seekPlayers, "&#FED8E2&l" + countdown, "plugin_message.game.starting.subtitle.seek");
+//
+//        if (timeSecond >= gameLifeCycle.maxSecond()) {
+//            Util.sendTitle(hidePlayers, "", "plugin_message.game.starting.subtitle.end");
+//            Util.sendTitle(seekPlayers, "", "plugin_message.game.starting.subtitle.end");
+//            for (UUID uuid : hidePlayers) {
+//                Player player = Bukkit.getPlayer(uuid);
+//                if (player == null)
+//                    continue;
+//                Util.clearPlayerEffect(player);
+//            }
+//            for (UUID uuid : seekPlayers) {
+//                Player player = Bukkit.getPlayer(uuid);
+//                if (player == null)
+//                    continue;
+//                Util.clearPlayerEffect(player);
+//                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 3, false, false, false));
+//            }
+//            setGameLifeCycle(GameLifeCycle.PLAYING);
+//        }
     }
 
     public void removePlayer(UUID uuid) {

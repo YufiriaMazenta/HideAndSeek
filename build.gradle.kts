@@ -23,11 +23,11 @@ dependencies {
     compileOnly("org.jetbrains:annotations:24.0.1")
     compileOnly("org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT")
     compileOnly("LibsDisguises:LibsDisguises:10.0.38")
-    implementation("com.crypticlib:CrypticLib:0.0.3")
+    implementation("com.crypticlib:CrypticLib:0.0.5")
 }
 
 group = "com.github.yufiriamazenta"
-version = "1.0.0-dev19"
+version = "1.0.0-dev20"
 var mainClass = "${rootProject.group}.${rootProject.name.lowercase()}.HideAndSeek"
 var pluginVersion: String = version.toString() + "-" + SimpleDateFormat("yyyyMMdd").format(System.currentTimeMillis())
 java.sourceCompatibility = JavaVersion.VERSION_17
